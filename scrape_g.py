@@ -1,3 +1,10 @@
+# Förhindra att Google Colab-specifika bibliotek körs på GitHub Actions
+try:
+    from google.colab import drive
+    drive.mount('/content/drive')
+except ModuleNotFoundError:
+    print("Google Colab-modulen hittades inte – körs utanför Colab.")
+
 # 📌 Importera nödvändiga bibliotek
 from google.colab import drive
 import os
