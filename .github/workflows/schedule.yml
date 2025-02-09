@@ -23,9 +23,9 @@ jobs:
 
       - name: Sätt upp Git och autentisera med GitHub Token
         run: |
-          git config --global user.email "din-email@example.com"
-          git config --global user.name "DittGitHubAnvändarnamn"
-          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/DittGitHubAnvändarnamn/ai-articles.git
+          git config --global user.email "lisa@maniola.se"
+          git config --global user.name "900722"
+          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/900722/ai-articles.git
 
       - name: Commit och pusha uppdaterade filer
         run: |
