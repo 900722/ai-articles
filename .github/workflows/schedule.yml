@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Klona repo
         uses: actions/checkout@v4
-        
+
       - name: Installera beroenden
         run: pip install requests beautifulsoup4
 
@@ -21,28 +21,21 @@ jobs:
       - name: Kör Python-scriptet
         run: python3 scrape_github.py
 
-      - name: Sätt upp Git och autentisera med GitHub Token
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
+      - name: Konfigurera SSH för autentisering
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.GH_SSH }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+      - name: Ställ in Git och autentisering
         run: |
           git config --global user.email "lisa@maniola.se"
           git config --global user.name "900722"
-          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/900722/ai-articles.git
-
-      - name: Rensa gamla credentials
-        run: |
-          git remote set-url --push origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/900722/ai-articles.git
-
-      - name: Hämta senaste versionen av repo
-        run: |
-          git fetch origin
-          git pull origin main --rebase || echo "Inga uppdateringar att hämta"
-
-      - name: Kontrollera om filer ändrats
-        run: git status
+          git remote set-url origin git@github.com:900722/ai-articles.git
 
       - name: Commit och pusha uppdaterade filer
         run: |
           git add articles.json previous_articles.json
-          git diff --staged --quiet || git commit -m "🔄 Automatiskt uppdaterade artiklar"
-          git push origin main || echo "Inget att pusha"
+          git commit -m "🔄 Automatiskt uppdaterade artiklar" || echo "Inga ändringar att commit:a"
+          git push origin main
