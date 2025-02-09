@@ -7,33 +7,34 @@ import random
 from bs4 import BeautifulSoup
 from datetime import datetime, timezone
 from urllib.parse import urljoin, urlparse
+import subprocess
 
-# 1️⃣ Ange sökvägar till lokala filer
-base_folder = "webscraping_files"
-os.makedirs(base_folder, exist_ok=True)
-previous_articles_path = os.path.join(base_folder, "previous_articles.json")
-new_articles_path = os.path.join(base_folder, "articles.json")  # Fil med endast nya artiklar
+# 1️⃣ Definiera fil-URL:er på GitHub
+GITHUB_RAW_ARTICLES = "https://raw.githubusercontent.com/900722/ai-articles/refs/heads/main/articles.json"
+GITHUB_RAW_PREVIOUS = "https://raw.githubusercontent.com/900722/ai-articles/refs/heads/main/previous_articles.json"
 
-# 2️⃣ Funktion för att ladda tidigare artiklar
+# 2️⃣ Funktion för att hämta `previous_articles.json` från GitHub
 def load_previous_articles():
-    if os.path.exists(previous_articles_path):
-        with open(previous_articles_path, "r", encoding="utf-8") as f:
-            try:
-                return json.load(f)
-            except json.JSONDecodeError:
-                return []  # Returnera tom lista om filen är korrupt
-    return []  # Om filen inte finns, returnera tom lista
+    try:
+        response = requests.get(GITHUB_RAW_PREVIOUS, timeout=10)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            print(f"⚠️ Kunde inte hämta previous_articles.json. Statuskod: {response.status_code}")
+            return []
+    except requests.RequestException as e:
+        print(f"❌ Fel vid hämtning av previous_articles.json: {e}")
+        return []
 
 # 3️⃣ Funktion för att spara previous_articles.json
 def save_previous_articles(all_articles):
     unique_articles = {article["link"]: article for article in all_articles}
-    with open(previous_articles_path, "w", encoding="utf-8") as f:
+    with open("previous_articles.json", "w", encoding="utf-8") as f:
         json.dump(list(unique_articles.values()), f, ensure_ascii=False, indent=4)
     print(f"✅ Uppdaterade previous_articles.json med {len(unique_articles)} artiklar.")
 
 # 4️⃣ Funktion för att spara endast nya artiklar i articles.json
 def save_new_articles(new_articles):
-    # Om inga nya artiklar hittades, skapa en standardpost med "No content available"
     if not new_articles:
         new_articles = [{
             "title": "No content available",
@@ -43,7 +44,7 @@ def save_new_articles(new_articles):
             "text": "No content available"
         }]
 
-    with open(new_articles_path, "w", encoding="utf-8") as f:
+    with open("articles.json", "w", encoding="utf-8") as f:
         json.dump(new_articles, f, ensure_ascii=False, indent=4)
     print(f"✅ {len(new_articles)} nya artiklar sparade i articles.json.")
 
@@ -65,7 +66,6 @@ USER_AGENTS = [
 session = requests.Session()
 
 def scrape_site(site_name, url, article_selector, title_selector, link_selector, text_selector, base_url=""):
-    """Generisk funktion för att skrapa en sajt"""
     print(f"🚀 Hämtar artiklar från {site_name}...")
 
     headers = {"User-Agent": random.choice(USER_AGENTS)}
@@ -90,16 +90,16 @@ def scrape_site(site_name, url, article_selector, title_selector, link_selector,
             title = title_tag.text.strip() if title_tag else "No content available"
             link = link_tag["href"] if link_tag and "href" in link_tag.attrs else "No content available"
             full_link = urljoin(base_url, link)
-            source_domain = urlparse(full_link).netloc  # Hämta domännamnet från länken
 
-            # Hämta hela brödtexten genom att slå ihop alla <p>-taggar
+            # ✨ Ta bort "www." från domännamnet i "source"
+            source_domain = urlparse(full_link).netloc.replace("www.", "")
+
             if text_selector:
                 text_elements = article.select(text_selector)
                 text = " ".join([p.text.strip() for p in text_elements]) if text_elements else "No content available"
             else:
                 text = "No content available"
 
-            # Kontrollera om artikeln redan finns
             if any(prev["link"] == full_link for prev in previous_articles):
                 print(f"⚠️ Skipping redan skrapad artikel: {title}")
                 continue  
@@ -110,8 +110,8 @@ def scrape_site(site_name, url, article_selector, title_selector, link_selector,
                 "title": title,
                 "link": full_link,
                 "date": datetime.now(timezone.utc).isoformat(),
-                "source": source_domain,  # Lägg till källans domän
-                "text": text  # Lägg till hela artikeltexten
+                "source": source_domain,  # ✅ Nu utan "www."
+                "text": text
             })
 
             time.sleep(random.uniform(3, 6))
@@ -135,22 +135,21 @@ def scrape_techcrunch():
 def scrape_wired():
     return scrape_site("Wired", SITES["wired"], "div.archive-item-component", "h2.archive-item-component__title", "a.archive-item-component__link", "div.article-body-component p", base_url="https://www.wired.com")
 
-# 8️⃣ Huvudfunktion för att köra allt
-def run_scraper():
-    all_articles = scrape_di() + scrape_resume() + scrape_techcrunch() + scrape_wired()
-    
-    # Ladda tidigare artiklar
-    previous_articles = load_previous_articles()
-
-    # Filtrera ut endast nya artiklar
-    new_articles = [article for article in all_articles if article["link"] not in {a["link"] for a in previous_articles}]
-
-    # Spara nya artiklar i articles.json
-    save_new_articles(new_articles)
-
-    # Uppdatera previous_articles.json med alla artiklar
-    save_previous_articles(previous_articles + new_articles)
+# 8️⃣ Commit och pusha uppdaterade filer till GitHub
+def commit_and_push_files():
+    try:
+        subprocess.run(["git", "config", "--global", "user.email", "din-email@example.com"], check=True)
+        subprocess.run(["git", "config", "--global", "user.name", "DittGitHubAnvändarnamn"], check=True)
+        
+        subprocess.run(["git", "add", "articles.json", "previous_articles.json"], check=True)
+        subprocess.run(["git", "commit", "-m", "🔄 Automatiskt uppdaterade artiklar"], check=True)
+        subprocess.run(["git", "push"], check=True)
+        
+        print("✅ Filerna har laddats upp till GitHub!")
+    except subprocess.CalledProcessError as e:
+        print(f"❌ Fel vid commit eller push: {e}")
 
 # 9️⃣ Kör skraparen
 if __name__ == "__main__":
     run_scraper()
+    commit_and_push_files()
