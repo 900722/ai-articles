@@ -2,7 +2,8 @@ name: Kör Colab-script dagligen
 
 on:
   schedule:
-    - cron: '0 7 * * *'  # Körs varje dag kl 06:00 UTC
+    - cron: '0 7 * * *'  # Körs varje dag kl 07:00 UTC
+  workflow_dispatch:  # Gör det möjligt att starta manuellt
 
 jobs:
   run_colab:
