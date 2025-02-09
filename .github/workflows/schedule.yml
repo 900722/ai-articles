@@ -22,10 +22,13 @@ jobs:
         run: python3 scrape_github.py
 
       - name: Sätt upp Git och autentisera med GitHub Token
+     
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           git config --global user.email "lisa@maniola.se"
           git config --global user.name "900722"
-          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/900722/ai-articles.git
+          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/900722/ai-articles.git
 
       - name: Hämta senaste versionen av repo
         run: |
