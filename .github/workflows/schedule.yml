@@ -1,4 +1,4 @@
-name: Kör Colab-script dagligen
+name: Kör AI artiklar script dagligen
 
 on:
   schedule:
@@ -15,5 +15,8 @@ jobs:
       - name: Installera beroenden
         run: pip install requests beautifulsoup4
 
+      - name: Lista alla filer (felsökning)
+        run: ls -la
+
       - name: Kör Python-scriptet
-        run: scrape_g.py
+        run: python3 scrape_g.py
