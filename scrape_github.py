@@ -149,6 +149,27 @@ def commit_and_push_files():
     except subprocess.CalledProcessError as e:
         print(f"❌ Fel vid commit eller push: {e}")
 
+def run_scraper():
+    all_articles = scrape_di() + scrape_resume() + scrape_techcrunch() + scrape_wired()
+    
+    # Ladda tidigare artiklar
+    previous_articles = load_previous_articles()
+
+    # Filtrera ut endast nya artiklar
+    new_articles = [article for article in all_articles if article["link"] not in {a["link"] for a in previous_articles}]
+
+    # Spara nya artiklar i articles.json
+    save_new_articles(new_articles)
+
+    # Uppdatera previous_articles.json med alla artiklar
+    save_previous_articles(previous_articles + new_articles)
+
+# 🚀 Kör skraparen om scriptet exekveras direkt
+if __name__ == "__main__":
+    run_scraper()
+    commit_and_push_files()
+
+
 # 9️⃣ Kör skraparen
 if __name__ == "__main__":
     run_scraper()
