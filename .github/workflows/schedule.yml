@@ -6,7 +6,7 @@ on:
   workflow_dispatch:  # Gör det möjligt att starta manuellt
 
 jobs:
-  run_colab:
+  run_scraper:
     runs-on: ubuntu-latest
     steps:
       - name: Klona repo
@@ -27,8 +27,13 @@ jobs:
           git config --global user.name "900722"
           git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/900722/ai-articles.git
 
+      - name: Hämta senaste versionen av repo
+        run: |
+          git fetch origin
+          git pull origin main --rebase || echo "Inga uppdateringar att hämta"
+
       - name: Commit och pusha uppdaterade filer
         run: |
           git add articles.json previous_articles.json
-          git commit -m "🔄 Automatiskt uppdaterade artiklar" || echo "Inga ändringar att commit:a"
-          git push origin main
+          git diff --staged --quiet || git commit -m "🔄 Automatiskt uppdaterade artiklar"
+          git push origin main || echo "Inget att pusha"
