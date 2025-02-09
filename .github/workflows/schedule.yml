@@ -19,4 +19,4 @@ jobs:
         run: ls -la
 
       - name: Kör Python-scriptet
-        run: python3 scrape_g.py
+        run: python3 scrape_github.py
