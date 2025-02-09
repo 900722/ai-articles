@@ -1,12 +1,4 @@
-# Förhindra att Google Colab-specifika bibliotek körs på GitHub Actions
-try:
-    from google.colab import drive
-    drive.mount('/content/drive')
-except ModuleNotFoundError:
-    print("Google Colab-modulen hittades inte – körs utanför Colab.")
-
 # 📌 Importera nödvändiga bibliotek
-from google.colab import drive
 import os
 import json
 import requests
@@ -16,16 +8,13 @@ from bs4 import BeautifulSoup
 from datetime import datetime, timezone
 from urllib.parse import urljoin, urlparse
 
-# 1️⃣ Koppla Google Drive till Colab
-drive.mount('/content/drive')
-
-# 2️⃣ Ange sökvägar till filerna i Google Drive
-base_folder = "/content/drive/My Drive/WebScrapingFiler"
+# 1️⃣ Ange sökvägar till lokala filer
+base_folder = "webscraping_files"
 os.makedirs(base_folder, exist_ok=True)
 previous_articles_path = os.path.join(base_folder, "previous_articles.json")
 new_articles_path = os.path.join(base_folder, "articles.json")  # Fil med endast nya artiklar
 
-# 3️⃣ Funktion för att ladda tidigare artiklar
+# 2️⃣ Funktion för att ladda tidigare artiklar
 def load_previous_articles():
     if os.path.exists(previous_articles_path):
         with open(previous_articles_path, "r", encoding="utf-8") as f:
@@ -35,14 +24,14 @@ def load_previous_articles():
                 return []  # Returnera tom lista om filen är korrupt
     return []  # Om filen inte finns, returnera tom lista
 
-# 4️⃣ Funktion för att spara previous_articles.json
+# 3️⃣ Funktion för att spara previous_articles.json
 def save_previous_articles(all_articles):
     unique_articles = {article["link"]: article for article in all_articles}
     with open(previous_articles_path, "w", encoding="utf-8") as f:
         json.dump(list(unique_articles.values()), f, ensure_ascii=False, indent=4)
     print(f"✅ Uppdaterade previous_articles.json med {len(unique_articles)} artiklar.")
 
-# 5️⃣ Funktion för att spara endast nya artiklar i articles.json
+# 4️⃣ Funktion för att spara endast nya artiklar i articles.json
 def save_new_articles(new_articles):
     # Om inga nya artiklar hittades, skapa en standardpost med "No content available"
     if not new_articles:
@@ -58,7 +47,7 @@ def save_new_articles(new_articles):
         json.dump(new_articles, f, ensure_ascii=False, indent=4)
     print(f"✅ {len(new_articles)} nya artiklar sparade i articles.json.")
 
-# 6️⃣ Webbsajter att skrapa
+# 5️⃣ Webbsajter att skrapa
 SITES = {
     "di": "https://www.di.se/amnen/artificiell-intelligens/",
     "resume": "https://www.resume.se/om/artificiell-intelligens-ai/",
@@ -66,7 +55,7 @@ SITES = {
     "wired": "https://www.wired.com/tag/artificial-intelligence/"
 }
 
-# 7️⃣ Skrapfunktion
+# 6️⃣ Skrapfunktion
 USER_AGENTS = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
@@ -133,7 +122,7 @@ def scrape_site(site_name, url, article_selector, title_selector, link_selector,
     print(f"✅ Hittade {len(articles)} nya artiklar från {site_name}!")
     return articles
 
-# 8️⃣ Skrapa från specifika sajter
+# 7️⃣ Skrapa från specifika sajter
 def scrape_di():
     return scrape_site("DI.se", SITES["di"], "article.js_watch-teaser", "h2.news-item__heading", "a[href]", "div.article__lead.global-l-bold p", base_url="https://www.di.se")
 
@@ -146,7 +135,7 @@ def scrape_techcrunch():
 def scrape_wired():
     return scrape_site("Wired", SITES["wired"], "div.archive-item-component", "h2.archive-item-component__title", "a.archive-item-component__link", "div.article-body-component p", base_url="https://www.wired.com")
 
-# 9️⃣ Huvudfunktion för att köra allt
+# 8️⃣ Huvudfunktion för att köra allt
 def run_scraper():
     all_articles = scrape_di() + scrape_resume() + scrape_techcrunch() + scrape_wired()
     
@@ -162,6 +151,6 @@ def run_scraper():
     # Uppdatera previous_articles.json med alla artiklar
     save_previous_articles(previous_articles + new_articles)
 
-# 🔟 Kör skraparen
+# 9️⃣ Kör skraparen
 if __name__ == "__main__":
     run_scraper()
