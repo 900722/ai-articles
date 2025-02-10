@@ -12,8 +12,15 @@ jobs:
       - name: Klona repo
         uses: actions/checkout@v4
 
-      - name: Installera beroenden
-        run: pip install requests beautifulsoup4
+      - name: Installera Python och beroenden
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Kontrollera Python-miljö och installerade paket (felsökning)
+        run: |
+          python3 --version
+          pip list
 
       - name: Lista alla filer (felsökning)
         run: ls -la
@@ -37,5 +44,4 @@ jobs:
       - name: Commit och pusha uppdaterade filer
         run: |
           git add articles_rss.json
-          git commit -m "🔄 Automatiskt uppdaterade artiklar" || echo "Inga ändringar att commit:a"
-          git push origin main
+          git diff --staged --quiet || (git commit -m "🔄 Automatiskt uppdaterade artiklar" && git push origin main)
