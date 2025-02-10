@@ -15,7 +15,7 @@ jobs:
       - name: Installera Python och beroenden
         run: |
           python3 -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install requests beautifulsoup4 feedparser
 
       - name: Kontrollera Python-miljö och installerade paket (felsökning)
         run: |
