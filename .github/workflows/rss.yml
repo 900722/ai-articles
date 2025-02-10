@@ -1,4 +1,4 @@
-name: Kör AI artiklar script dagligen
+name: Kör RSS script dagligen
 
 on:
   schedule:
