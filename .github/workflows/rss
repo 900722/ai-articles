@@ -1,0 +1,41 @@
+name: Kör AI artiklar script dagligen
+
+on:
+  schedule:
+    - cron: '0 7 * * *'  # Körs varje dag kl 07:00 UTC
+  workflow_dispatch:  # Gör det möjligt att starta manuellt
+
+jobs:
+  run_scraper:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Klona repo
+        uses: actions/checkout@v4
+
+      - name: Installera beroenden
+        run: pip install requests beautifulsoup4
+
+      - name: Lista alla filer (felsökning)
+        run: ls -la
+
+      - name: Kör Python-scriptet
+        run: python3 scrape_rss.py
+
+      - name: Konfigurera SSH för autentisering
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.GH_SSH }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+      - name: Ställ in Git och autentisering
+        run: |
+          git config --global user.email "lisa@maniola.se"
+          git config --global user.name "900722"
+          git remote set-url origin git@github.com:900722/ai-articles.git
+
+      - name: Commit och pusha uppdaterade filer
+        run: |
+          git add articles_rss.json
+          git commit -m "🔄 Automatiskt uppdaterade artiklar" || echo "Inga ändringar att commit:a"
+          git push origin main
