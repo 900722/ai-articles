@@ -124,7 +124,7 @@ def scrape_site(site_name, url, article_selector, title_selector, link_selector,
 
 # 7️⃣ Skrapa från specifika sajter
 def scrape_di():
-    return scrape_site("DI.se", SITES["di"], "article.js_watch-teaser", "h2.news-item__heading", "a[href]", "div.article__lead.global-l-bold p", base_url="https://www.di.se")
+    return scrape_site("DI.se", SITES["di"], "article.js_watch-teaser", "h2.news-item__heading", "a[href]", "div.article__lead.global-l-bold, div.article__lead.global-l-bold p", base_url="https://www.di.se")
 
 def scrape_resume():
     return scrape_site("Resume.se", SITES["resume"], "article", "h2", "article a[href]", "div.paywalled p", base_url="https://www.resume.se")
@@ -165,12 +165,6 @@ def run_scraper():
     save_previous_articles(previous_articles + new_articles)
 
 # 🚀 Kör skraparen om scriptet exekveras direkt
-if __name__ == "__main__":
-    run_scraper()
-    commit_and_push_files()
-
-
-# 9️⃣ Kör skraparen
 if __name__ == "__main__":
     run_scraper()
     commit_and_push_files()
