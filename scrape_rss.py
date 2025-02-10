@@ -12,7 +12,10 @@ RSS_FEEDS = {
     "Reddit Technology": "https://www.reddit.com/r/technology/.rss",
     "OpenAI News": "https://openai.com/news/rss.xml",
     "Google Gemini Blog": "https://blog.google/products/gemini/rss/",
-    "Harvard Business Review": "http://feeds.harvardbusiness.org/harvardbusiness"
+    "Harvard Business Review": "http://feeds.harvardbusiness.org/harvardbusiness",
+    
+    # Lagt till Dagens Industri RSS-feed
+    "Dagens Industri": "http://di.se/rss"
 }
 
 DATA_FILE = "articles_rss.json"  # Fil där alla nyheter sparas
