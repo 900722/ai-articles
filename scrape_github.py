@@ -49,7 +49,7 @@ SITES = [
     }
 ]
 
-# 1️⃣ Funktion för att ladda `previous_articles.json` eller skapa filen om den saknas
+# 1️⃣ Funktion för att ladda `previous_articles.json`
 def load_previous_articles():
     if not os.path.exists("previous_articles.json"):
         print("⚠️ previous_articles.json saknas. Skapar en tom fil...")
@@ -65,7 +65,7 @@ def load_previous_articles():
             json.dump([], f, ensure_ascii=False, indent=4)
         return []
 
-# 2️⃣ Funktion för att spara previous_articles.json utan att ta bort gamla artiklar
+# 2️⃣ Funktion för att spara previous_articles.json
 def save_previous_articles(new_articles):
     previous_articles = load_previous_articles()
     all_articles = previous_articles + new_articles
@@ -74,16 +74,14 @@ def save_previous_articles(new_articles):
     with open("previous_articles.json", "w", encoding="utf-8") as f:
         json.dump(list(unique_articles.values()), f, ensure_ascii=False, indent=4)
 
-    # 🔹 Uppdatera filens timestamp så att Git ser ändringen
     os.utime("previous_articles.json", None)
     print(f"✅ Uppdaterade previous_articles.json med {len(unique_articles)} artiklar totalt.")
 
-# 3️⃣ Funktion för att spara senaste skrapade artiklar i articles.json
+# 3️⃣ Funktion för att spara senaste skrapade artiklar
 def save_new_articles(new_articles):
     with open("articles.json", "w", encoding="utf-8") as f:
         json.dump(new_articles, f, ensure_ascii=False, indent=4)
 
-    # 🔹 Uppdatera filens timestamp så att Git ser ändringen
     os.utime("articles.json", None)
     print(f"✅ {len(new_articles)} nya artiklar sparade i articles.json.")
 
@@ -116,7 +114,6 @@ def scrape_site(site):
 
         title = title_tag.text.strip() if title_tag else "No title available"
         link = urljoin(site["base_url"], link_tag["href"]) if link_tag and "href" in link_tag.attrs else "No link available"
-        text = " ".join([p.get_text(strip=True) for p in article.select(site["text_selector"])]) if site["text_selector"] else "No text available"
 
         if any(prev["link"] == link for prev in previous_articles):
             print(f"⚠️ Skipping redan skrapad artikel: {title}")
@@ -128,8 +125,7 @@ def scrape_site(site):
             "title": title,
             "link": link,
             "date": datetime.now(timezone.utc).isoformat(),
-            "source": urlparse(link).netloc.replace("www.", ""),
-            "text": text
+            "source": urlparse(link).netloc.replace("www.", "")
         })
 
         time.sleep(random.uniform(3, 6))  # Simulera mänskligt beteende
@@ -149,35 +145,25 @@ def run_scraper():
     save_new_articles(new_articles)
     save_previous_articles(new_articles)
 
-# 6️⃣ Hantera Git-commit och push
-# 6️⃣ Hantera Git-commit och push
+# 6️⃣ Hantera Git-commit och push via SSH och konfigurerad användare
 def commit_and_push_files():
-    # Kontrollera om användaren har konfigurerat Git
     try:
-        user_name = subprocess.run(["git", "config", "user.name"], capture_output=True, text=True).stdout.strip()
-        user_email = subprocess.run(["git", "config", "user.email"], capture_output=True, text=True).stdout.strip()
+        subprocess.run(["git", "config", "--global", "user.name", "900722"], check=True)
+        subprocess.run(["git", "config", "--global", "user.email", "lisa@maniola.se"], check=True)
 
-        if not user_name or not user_email:
-            print("⚠️ Git-konfiguration saknas. Ställer in standardvärden...")
-            subprocess.run(["git", "config", "--global", "user.name", "Automated Scraper"], check=True)
-            subprocess.run(["git", "config", "--global", "user.email", "scraper@localhost"], check=True)
+        status = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True)
+        if not status.stdout.strip():
+            print("✅ Inga ändringar att commit:a. Skippar push.")
+            return
+
+        subprocess.run(["git", "add", "articles.json", "previous_articles.json"], check=True)
+        subprocess.run(["git", "commit", "-m", "🔄 Automatiskt uppdaterade artiklar"], check=True)
+        subprocess.run(["git", "push", "origin", "main"], env={"GIT_SSH_COMMAND": "ssh -i ~/.ssh/GH_SSH"}, check=True)
+
+        print("✅ Filerna har laddats upp till GitHub via SSH!")
 
     except Exception as e:
-        print(f"❌ Fel vid kontroll av Git-konfiguration: {e}")
-        return
-
-    # Kontrollera om något har ändrats
-    status = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True)
-    if not status.stdout.strip():
-        print("✅ Inga ändringar att commit:a. Skippar push.")
-        return
-
-    # Lägg till, commit:a och push:a ändringar
-    subprocess.run(["git", "add", "--force", "articles.json", "previous_articles.json"], check=True)
-    subprocess.run(["git", "commit", "-m", "🔄 Automatiskt uppdaterade artiklar"], check=True)
-    subprocess.run(["git", "push"], check=True)
-
-    print("✅ Filerna har laddats upp till GitHub via SSH!")
+        print(f"❌ Fel vid Git-hantering: {e}")
 
 # 7️⃣ Kör skrapning och Git-push
 if __name__ == "__main__":
