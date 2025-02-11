@@ -150,12 +150,29 @@ def run_scraper():
     save_previous_articles(new_articles)
 
 # 6️⃣ Hantera Git-commit och push
+# 6️⃣ Hantera Git-commit och push
 def commit_and_push_files():
+    # Kontrollera om användaren har konfigurerat Git
+    try:
+        user_name = subprocess.run(["git", "config", "user.name"], capture_output=True, text=True).stdout.strip()
+        user_email = subprocess.run(["git", "config", "user.email"], capture_output=True, text=True).stdout.strip()
+
+        if not user_name or not user_email:
+            print("⚠️ Git-konfiguration saknas. Ställer in standardvärden...")
+            subprocess.run(["git", "config", "--global", "user.name", "Automated Scraper"], check=True)
+            subprocess.run(["git", "config", "--global", "user.email", "scraper@localhost"], check=True)
+
+    except Exception as e:
+        print(f"❌ Fel vid kontroll av Git-konfiguration: {e}")
+        return
+
+    # Kontrollera om något har ändrats
     status = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True)
     if not status.stdout.strip():
         print("✅ Inga ändringar att commit:a. Skippar push.")
         return
 
+    # Lägg till, commit:a och push:a ändringar
     subprocess.run(["git", "add", "--force", "articles.json", "previous_articles.json"], check=True)
     subprocess.run(["git", "commit", "-m", "🔄 Automatiskt uppdaterade artiklar"], check=True)
     subprocess.run(["git", "push"], check=True)
