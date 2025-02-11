@@ -24,9 +24,12 @@ jobs:
       - name: Konfigurera SSH för autentisering
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.GH_SSH_KEY }}" > ~/.ssh/id_rsa
+          echo "${{ secrets.GH_SSH_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+      - name: Testa SSH-anslutning
+        run: ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -T git@github.com
 
       - name: Ställ in Git och autentisering
         run: |
