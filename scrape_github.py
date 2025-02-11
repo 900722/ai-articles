@@ -26,12 +26,30 @@ def load_previous_articles():
         print(f"❌ Fel vid hämtning av previous_articles.json: {e}")
         return []
 
-# 3️⃣ Funktion för att spara previous_articles.json
-def save_previous_articles(all_articles):
-    unique_articles = {article["link"]: article for article in all_articles}
-    with open("previous_articles.json", "w", encoding="utf-8") as f:
-        json.dump(list(unique_articles.values()), f, ensure_ascii=False, indent=4)
-    print(f"✅ Uppdaterade previous_articles.json med {len(unique_articles)} artiklar.")
+# 3️⃣ Funktion för att spara previous_articles.json utan att ta bort gamla artiklar
+def save_previous_articles(new_articles):
+    try:
+        # Ladda befintliga artiklar
+        if os.path.exists("previous_articles.json"):
+            with open("previous_articles.json", "r", encoding="utf-8") as f:
+                previous_articles = json.load(f)
+        else:
+            previous_articles = []
+
+        # Kombinera nya och gamla artiklar
+        all_articles = previous_articles + new_articles
+
+        # Ta bort eventuella dubbletter baserat på artikelns länk
+        unique_articles = {article["link"]: article for article in all_articles}
+
+        # Spara den uppdaterade listan
+        with open("previous_articles.json", "w", encoding="utf-8") as f:
+            json.dump(list(unique_articles.values()), f, ensure_ascii=False, indent=4)
+
+        print(f"✅ Uppdaterade previous_articles.json med {len(unique_articles)} artiklar totalt.")
+
+    except Exception as e:
+        print(f"❌ Fel vid sparande av previous_articles.json: {e}")
 
 # 4️⃣ Funktion för att spara endast nya artiklar i articles.json
 def save_new_articles(new_articles):
@@ -91,7 +109,6 @@ def scrape_site(site_name, url, article_selector, title_selector, link_selector,
             link = link_tag["href"] if link_tag and "href" in link_tag.attrs else "No content available"
             full_link = urljoin(base_url, link)
 
-            # ✨ Ta bort "www." från domännamnet i "source"
             source_domain = urlparse(full_link).netloc.replace("www.", "")
 
             if text_selector:
@@ -110,7 +127,7 @@ def scrape_site(site_name, url, article_selector, title_selector, link_selector,
                 "title": title,
                 "link": full_link,
                 "date": datetime.now(timezone.utc).isoformat(),
-                "source": source_domain,  # ✅ Nu utan "www."
+                "source": source_domain,
                 "text": text
             })
 
@@ -151,20 +168,11 @@ def commit_and_push_files():
 
 def run_scraper():
     all_articles = scrape_di() + scrape_resume() + scrape_techcrunch() + scrape_wired()
-    
-    # Ladda tidigare artiklar
     previous_articles = load_previous_articles()
-
-    # Filtrera ut endast nya artiklar
     new_articles = [article for article in all_articles if article["link"] not in {a["link"] for a in previous_articles}]
-
-    # Spara nya artiklar i articles.json
     save_new_articles(new_articles)
+    save_previous_articles(new_articles)
 
-    # Uppdatera previous_articles.json med alla artiklar
-    save_previous_articles(previous_articles + new_articles)
-
-# 🚀 Kör skraparen om scriptet exekveras direkt
 if __name__ == "__main__":
     run_scraper()
     commit_and_push_files()
