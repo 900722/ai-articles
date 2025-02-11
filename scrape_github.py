@@ -59,13 +59,13 @@ def load_previous_articles():
     try:
         with open("previous_articles.json", "r", encoding="utf-8") as f:
             return json.load(f)
-    except json.JSONDecodeError:
-        print("❌ previous_articles.json var korrupt. Återställer filen...")
+    except (json.JSONDecodeError, IOError):
+        print("❌ previous_articles.json var korrupt eller kunde inte läsas. Återställer filen...")
         with open("previous_articles.json", "w", encoding="utf-8") as f:
             json.dump([], f, ensure_ascii=False, indent=4)
         return []
 
-# 2️⃣ Funktion för att spara previous_articles.json
+# 2️⃣ Funktion för att spara `previous_articles.json`
 def save_previous_articles(new_articles):
     previous_articles = load_previous_articles()
     all_articles = previous_articles + new_articles
@@ -74,16 +74,17 @@ def save_previous_articles(new_articles):
     with open("previous_articles.json", "w", encoding="utf-8") as f:
         json.dump(list(unique_articles.values()), f, ensure_ascii=False, indent=4)
 
-    os.utime("previous_articles.json", None)
     print(f"✅ Uppdaterade previous_articles.json med {len(unique_articles)} artiklar totalt.")
 
 # 3️⃣ Funktion för att spara senaste skrapade artiklar
 def save_new_articles(new_articles):
-    with open("articles.json", "w", encoding="utf-8") as f:
-        json.dump(new_articles, f, ensure_ascii=False, indent=4)
+    if new_articles:
+        with open("articles.json", "w", encoding="utf-8") as f:
+            json.dump(new_articles, f, ensure_ascii=False, indent=4)
 
-    os.utime("articles.json", None)
-    print(f"✅ {len(new_articles)} nya artiklar sparade i articles.json.")
+        print(f"✅ {len(new_articles)} nya artiklar sparade i articles.json.")
+    else:
+        print("ℹ️ Inga nya artiklar att spara.")
 
 # 4️⃣ Funktion för att skrapa enskilda webbplatser
 def scrape_site(site):
@@ -97,11 +98,9 @@ def scrape_site(site):
 
     try:
         response = requests.get(site["url"], headers=headers, timeout=10)
-        if response.status_code != 200:
-            print(f"❌ Misslyckades att hämta {site['name']}. Statuskod: {response.status_code}")
-            return []
+        response.raise_for_status()
     except requests.RequestException as e:
-        print(f"❌ Fel vid hämtning av {site['name']}: {e}")
+        print(f"❌ Misslyckades att hämta {site['name']}: {e}")
         return []
 
     soup = BeautifulSoup(response.text, "html.parser")
@@ -112,14 +111,14 @@ def scrape_site(site):
         title_tag = article.select_one(site["title_selector"])
         link_tag = article.select_one(site["link_selector"])
 
-        title = title_tag.text.strip() if title_tag else "No title available"
-        link = urljoin(site["base_url"], link_tag["href"]) if link_tag and "href" in link_tag.attrs else "No link available"
+        if not title_tag or not link_tag or "href" not in link_tag.attrs:
+            continue
+
+        title = title_tag.text.strip()
+        link = urljoin(site["base_url"], link_tag["href"])
 
         if any(prev["link"] == link for prev in previous_articles):
-            print(f"⚠️ Skipping redan skrapad artikel: {title}")
-            continue  
-
-        print(f"🔍 Hittad ny artikel: {title} ({link})")
+            continue
 
         articles.append({
             "title": title,
@@ -128,7 +127,7 @@ def scrape_site(site):
             "source": urlparse(link).netloc.replace("www.", "")
         })
 
-        time.sleep(random.uniform(3, 6))  # Simulera mänskligt beteende
+        time.sleep(random.uniform(2, 5))  # Simulera mänskligt beteende
 
     print(f"✅ Hittade {len(articles)} nya artiklar från {site['name']}!")
     return articles
@@ -158,11 +157,11 @@ def commit_and_push_files():
 
         subprocess.run(["git", "add", "articles.json", "previous_articles.json"], check=True)
         subprocess.run(["git", "commit", "-m", "🔄 Automatiskt uppdaterade artiklar"], check=True)
-        subprocess.run(["git", "push", "origin", "main"], env={"GIT_SSH_COMMAND": "ssh -i ~/.ssh/GH_SSH"}, check=True)
+        subprocess.run(["git", "push", "origin", "main"], env={"GIT_SSH_COMMAND": "ssh -i ~/.ssh/id_rsa"}, check=True)
 
         print("✅ Filerna har laddats upp till GitHub via SSH!")
 
-    except Exception as e:
+    except subprocess.CalledProcessError as e:
         print(f"❌ Fel vid Git-hantering: {e}")
 
 # 7️⃣ Kör skrapning och Git-push
