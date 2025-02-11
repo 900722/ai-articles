@@ -150,14 +150,22 @@ def run_scraper():
 # 7️⃣ Commit och push via SSH
 def commit_and_push_files():
     try:
+        # Konfigurera användaridentitet för Git
         subprocess.run(["git", "config", "--global", "user.email", "lisa@maniola.se"], check=True)
         subprocess.run(["git", "config", "--global", "user.name", "900722"], check=True)
 
+        # Kontrollera om det finns ändringar
+        status = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True)
+        if not status.stdout.strip():
+            print("✅ Inga ändringar att commit:a. Skippar push.")
+            return
+
+        # Lägg till och commit:a filer
         subprocess.run(["git", "add", "articles.json", "previous_articles.json"], check=True)
         subprocess.run(["git", "commit", "-m", "🔄 Automatiskt uppdaterade artiklar"], check=True)
 
         # Pusha via SSH
-        subprocess.run(["git", "push", "git@github.com:900722/ai-articles.git"], check=True)
+        subprocess.run(["git", "push"], check=True)
 
         print("✅ Filerna har laddats upp till GitHub via SSH!")
 
