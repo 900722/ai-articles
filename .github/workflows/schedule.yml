@@ -12,7 +12,12 @@ jobs:
       - name: Klona repo
         uses: actions/checkout@v4
 
-      - name: Installera beroenden
+      - name: Installera Python och beroenden
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'  # Säkerställ att Python är installerat
+
+      - name: Installera pip-paket
         run: pip install requests beautifulsoup4
 
       - name: Lista alla filer (felsökning)
@@ -24,11 +29,14 @@ jobs:
       - name: Konfigurera SSH för autentisering
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.GH_SSH }}" | awk '{printf "%s\n", $0}' > ~/.ssh/id_rsa
+          chmod 700 ~/.ssh
+          printf "%s" "${{ secrets.GH_SSH }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          ssh-keyscan github.com > ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/id_rsa
+          unset GH_SSH  # Rensar miljövariabeln efter användning för ökad säkerhet
 
       - name: Testa SSH-anslutning
         run: ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -T git@github.com || true
@@ -37,7 +45,8 @@ jobs:
         run: |
           git config --global user.email "lisa@maniola.se"
           git config --global user.name "900722"
-          git remote set-url origin git@github.com:900722/ai-articles.git
+          git remote remove origin || true  # Tar bort origin om det redan finns
+          git remote add origin git@github.com:900722/ai-articles.git
           git fetch --all
           git remote -v
 
@@ -46,7 +55,13 @@ jobs:
 
       - name: Commit och pusha uppdaterade filer
         run: |
-          git add articles.json previous_articles.json
+          if [ -f articles.json ] && [ -f previous_articles.json ]; then
+            git add articles.json previous_articles.json
+          else
+            echo "❗ Fil saknas, hoppar över commit."
+            exit 0
+          fi
+
           if git diff --cached --quiet; then
             echo "✅ Inga ändringar att commit:a. Skippar push."
           else
