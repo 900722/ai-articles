@@ -31,7 +31,7 @@ jobs:
           ssh-add ~/.ssh/id_rsa
 
       - name: Testa SSH-anslutning
-        run: ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -T git@github.com
+        run: ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -T git@github.com || true
 
       - name: Ställ in Git och autentisering
         run: |
