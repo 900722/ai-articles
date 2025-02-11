@@ -27,6 +27,8 @@ jobs:
           echo "${{ secrets.GH_SSH_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan github.com >> ~/.ssh/known_hosts
+          eval "$(ssh-agent -s)"
+          ssh-add ~/.ssh/id_rsa
 
       - name: Testa SSH-anslutning
         run: ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -T git@github.com
@@ -36,7 +38,8 @@ jobs:
           git config --global user.email "lisa@maniola.se"
           git config --global user.name "900722"
           git remote set-url origin git@github.com:900722/ai-articles.git
-          git fetch --all  # Uppdatera repository-information
+          git fetch --all
+          git remote -v
 
       - name: Kontrollera om det finns ändringar
         run: git status --short
@@ -48,6 +51,6 @@ jobs:
             echo "✅ Inga ändringar att commit:a. Skippar push."
           else
             git commit -m "🔄 Automatiskt uppdaterade artiklar"
-            git log -1 --oneline  # Visa senaste commit för felsökning
+            git log -1 --oneline
             GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" git push origin main
           fi
