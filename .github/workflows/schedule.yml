@@ -33,6 +33,7 @@ jobs:
           git config --global user.email "lisa@maniola.se"
           git config --global user.name "900722"
           git remote set-url origin git@github.com:900722/ai-articles.git
+          git fetch --all  # Uppdatera repository-information
 
       - name: Kontrollera om det finns ändringar
         run: git status --short
@@ -45,5 +46,5 @@ jobs:
           else
             git commit -m "🔄 Automatiskt uppdaterade artiklar"
             git log -1 --oneline  # Visa senaste commit för felsökning
-            git push origin main
+            GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" git push origin main
           fi
