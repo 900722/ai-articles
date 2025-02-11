@@ -147,13 +147,20 @@ def run_scraper():
     save_new_articles(new_articles)
     save_previous_articles(new_articles)
 
-# 7️⃣ Commit och push
+# 7️⃣ Commit och push via SSH
 def commit_and_push_files():
     try:
+        subprocess.run(["git", "config", "--global", "user.email", "lisa@maniola.se"], check=True)
+        subprocess.run(["git", "config", "--global", "user.name", "900722"], check=True)
+
         subprocess.run(["git", "add", "articles.json", "previous_articles.json"], check=True)
         subprocess.run(["git", "commit", "-m", "🔄 Automatiskt uppdaterade artiklar"], check=True)
-        subprocess.run(["git", "push"], check=True)
-        print("✅ Filerna har laddats upp till GitHub!")
+
+        # Pusha via SSH
+        subprocess.run(["git", "push", "git@github.com:900722/ai-articles.git"], check=True)
+
+        print("✅ Filerna har laddats upp till GitHub via SSH!")
+
     except subprocess.CalledProcessError as e:
         print(f"❌ Fel vid commit eller push: {e}")
 
