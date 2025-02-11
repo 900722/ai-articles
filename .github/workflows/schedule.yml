@@ -24,7 +24,7 @@ jobs:
       - name: Konfigurera SSH för autentisering
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.GH_SSH_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
+          echo "${{ secrets.GH_SSH_KEY }}" | awk '{printf "%s\n", $0}' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan github.com >> ~/.ssh/known_hosts
           eval "$(ssh-agent -s)"
