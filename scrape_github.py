@@ -49,6 +49,9 @@ def save_previous_articles(new_articles):
     with open("previous_articles.json", "w", encoding="utf-8") as f:
         json.dump(list(unique_articles.values()), f, ensure_ascii=False, indent=4)
 
+    # 🔹 Uppdatera filens timestamp så att Git ser ändringen
+    os.utime("previous_articles.json", None)
+
     print(f"✅ Uppdaterade previous_articles.json med {len(unique_articles)} artiklar totalt.")
 
 # 4️⃣ Funktion för att spara endast nya artiklar i articles.json
@@ -64,6 +67,10 @@ def save_new_articles(new_articles):
 
     with open("articles.json", "w", encoding="utf-8") as f:
         json.dump(new_articles, f, ensure_ascii=False, indent=4)
+
+    # 🔹 Uppdatera filens timestamp så att Git ser ändringen
+    os.utime("articles.json", None)
+
     print(f"✅ {len(new_articles)} nya artiklar sparade i articles.json.")
 
 # 5️⃣ Skrapfunktion och sajter
@@ -148,30 +155,8 @@ def run_scraper():
     save_previous_articles(new_articles)
 
 # 7️⃣ Commit och push via SSH
-def commit_and_push_files():
-    try:
-        # Konfigurera användaridentitet för Git
-        subprocess.run(["git", "config", "--global", "user.email", "lisa@maniola.se"], check=True)
-        subprocess.run(["git", "config", "--global", "user.name", "900722"], check=True)
-
-        # Kontrollera om det finns ändringar
-        status = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True)
-        if not status.stdout.strip():
-            print("✅ Inga ändringar att commit:a. Skippar push.")
-            return
-
-        # Lägg till och commit:a filer
-        subprocess.run(["git", "add", "articles.json", "previous_articles.json"], check=True)
-        subprocess.run(["git", "commit", "-m", "🔄 Automatiskt uppdaterade artiklar"], check=True)
-
-        # Pusha via SSH
-        subprocess.run(["git", "push"], check=True)
-
-        print("✅ Filerna har laddats upp till GitHub via SSH!")
-
-    except subprocess.CalledProcessError as e:
-        print(f"❌ Fel vid commit eller push: {e}")
-
 if __name__ == "__main__":
     run_scraper()
-    commit_and_push_files()
+    subprocess.run(["git", "add", "--force", "articles.json", "previous_articles.json"], check=True)
+    subprocess.run(["git", "commit", "-m", "🔄 Automatiskt uppdaterade artiklar"], check=True)
+    subprocess.run(["git", "push"], check=True)
