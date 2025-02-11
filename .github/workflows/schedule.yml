@@ -44,12 +44,12 @@ jobs:
 
       - name: Ställ in Git och autentisering
         run: |
-          git config --global user.email "lisa@maniola.se"
-          git config --global user.name "900722"
-          git remote remove origin || true  # Tar bort origin om det redan finns
-          git remote add origin git@github.com:900722/ai-articles.git
-          git fetch --all
-          git remote -v
+         git config --global user.email "lisa@maniola.se"
+         git config --global user.name "900722"
+         git remote remove origin || true
+         git remote add origin git@github.com:900722/ai-articles.git  # Ändra från HTTPS till SSH
+         git fetch --all
+         git remote -v
 
       - name: Kontrollera om det finns ändringar
         run: git status --short
