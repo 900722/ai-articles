@@ -29,20 +29,15 @@ def load_previous_articles():
 # 3️⃣ Funktion för att spara previous_articles.json utan att ta bort gamla artiklar
 def save_previous_articles(new_articles):
     try:
-        # Ladda befintliga artiklar
         if os.path.exists("previous_articles.json"):
             with open("previous_articles.json", "r", encoding="utf-8") as f:
                 previous_articles = json.load(f)
         else:
             previous_articles = []
 
-        # Kombinera nya och gamla artiklar
         all_articles = previous_articles + new_articles
-
-        # Ta bort eventuella dubbletter baserat på artikelns länk
         unique_articles = {article["link"]: article for article in all_articles}
 
-        # Spara den uppdaterade listan
         with open("previous_articles.json", "w", encoding="utf-8") as f:
             json.dump(list(unique_articles.values()), f, ensure_ascii=False, indent=4)
 
@@ -111,9 +106,10 @@ def scrape_site(site_name, url, article_selector, title_selector, link_selector,
 
             source_domain = urlparse(full_link).netloc.replace("www.", "")
 
+            # Förbättrad textinsamling
             if text_selector:
                 text_elements = article.select(text_selector)
-                text = " ".join([p.text.strip() for p in text_elements]) if text_elements else "No content available"
+                text = " ".join([p.get_text(strip=True) for p in text_elements]) if text_elements else "❌ Ingen text funnen, kan vara bakom paywall eller JavaScript-laddad"
             else:
                 text = "No content available"
 
@@ -122,6 +118,7 @@ def scrape_site(site_name, url, article_selector, title_selector, link_selector,
                 continue  
 
             print(f"🔍 Hittad ny artikel: {title} ({full_link}) från {source_domain}")
+            print(f"📝 Artikeltext: {text[:100]}...")  # Skriver ut de första 100 tecknen för kontroll
 
             articles.append({
                 "title": title,
