@@ -8,7 +8,7 @@ from urllib.parse import urljoin, urlparse
 ARTICLES_FILE = "articles_text.json"
 PREVIOUS_ARTICLES_FILE = "previous_articles_text.json"
 
-# 🔹 Korrekt lista över sajter att skrapa (hämtad från ditt script)
+# 🔹 Korrekt lista över sajter att skrapa (med text_selector)
 SITES = [
     {
         "name": "DI.se",
@@ -62,7 +62,7 @@ def save_json_file(filename, data):
         json.dump(data, file, indent=4, ensure_ascii=False)
 
 def scrape_articles():
-    """Skrapa artiklar från de angivna sajterna."""
+    """Skrapa artiklar från de angivna sajterna, inklusive brödtext."""
     articles = []
     
     for site in SITES:
@@ -79,16 +79,19 @@ def scrape_articles():
         for article in soup.select(site["article_selector"]):
             title_tag = article.select_one(site["title_selector"])
             link_tag = article.select_one(site["link_selector"])
+            text_tag = article.select(site["text_selector"])  # Hämta brödtext som en lista av p-taggar
 
             if not title_tag or not link_tag or "href" not in link_tag.attrs:
                 continue
 
             title = title_tag.text.strip()
             link = urljoin(site["base_url"], link_tag["href"])
+            text = " ".join([p.get_text(strip=True) for p in text_tag]) if text_tag else "Ingen brödtext tillgänglig"
 
             articles.append({
                 "title": title,
                 "link": link,
+                "text": text,
                 "date": datetime.now(timezone.utc).isoformat(),
                 "source": urlparse(link).netloc.replace("www.", "")
             })
