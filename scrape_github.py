@@ -120,6 +120,7 @@ def scrape_other_sites():
     
     for site in SITES:
         print(f"🔍 Skrapar artiklar från: {site['name']}")
+
         response = requests.get(site["url"])
 
         if response.status_code != 200:
@@ -127,6 +128,12 @@ def scrape_other_sites():
             continue
 
         soup = BeautifulSoup(response.text, "html.parser")
+
+        article_count = len(soup.select(site["article_selector"]))
+        print(f"✅ Hittade {article_count} artiklar på {site['name']}")
+
+        if article_count == 0:
+            print(f"⚠️ Ingen artikel hittades på {site['name']}! Kontrollera selektorn.")
 
         for article in soup.select(site["article_selector"]):
             title_tag = article.select_one(site["title_selector"])
