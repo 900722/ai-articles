@@ -2,7 +2,7 @@ import json
 import os
 import time
 import feedparser  # 📡 För att hantera RSS-flödet
-from datetime import datetime
+from datetime import datetime, timezone  # 🔹 Uppdaterad datetime
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -86,7 +86,7 @@ def scrape_resume_articles():
             "title": soup.find("h1").get_text(strip=True),
             "text": text if text else "Ingen brödtext tillgänglig",
             "link": link,
-            "date": datetime.utcnow().isoformat(),
+            "date": datetime.now(timezone.utc).isoformat(),  # ✅ Uppdaterad datetime
             "source": "resume.se",
         }
 
@@ -124,7 +124,7 @@ def scrape_techcrunch_articles():
             "title": title,
             "link": article_url,
             "text": text,
-            "date": datetime.utcnow().isoformat(),
+            "date": datetime.now(timezone.utc).isoformat(),  # ✅ Uppdaterad datetime
             "source": "techcrunch.com"
         }
 
@@ -161,7 +161,7 @@ def scrape_wired_articles():
             "title": title,
             "link": article_url,
             "text": text,
-            "date": datetime.utcnow().isoformat(),
+            "date": datetime.now(timezone.utc).isoformat(),  # ✅ Uppdaterad datetime
             "source": "wired.com"
         }
 
@@ -170,21 +170,41 @@ def scrape_wired_articles():
 
     return articles
 
-# 🔄 Uppdatera JSON-filer och undvik dubbletter
-def update_articles():
-    previous_articles = load_json_file(PREVIOUS_ARTICLES_FILE)
-    new_articles_resume = scrape_resume_articles()
-    new_articles_techcrunch = scrape_techcrunch_articles()  
-    new_articles_wired = scrape_wired_articles()  # ✅ Wired via RSS
-    new_articles_other = scrape_other_sites()
+# 📰 Skrapa DI.se
+def scrape_other_sites():
+    articles = []
+    
+    for site in SITES:
+        print(f"🔍 Skrapar artiklar från: {site['name']}")
 
-    all_articles = previous_articles + new_articles_resume + new_articles_techcrunch + new_articles_wired + new_articles_other
+        response = requests.get(site["url"])
 
-    unique_articles = {article["link"]: article for article in all_articles}.values()
+        if response.status_code != 200:
+            print(f"⚠️ Misslyckades att hämta {site['name']}: {response.status_code}")
+            continue
 
-    save_json_file(ARTICLES_FILE, list(unique_articles))
-    save_json_file(PREVIOUS_ARTICLES_FILE, list(unique_articles))
+        soup = BeautifulSoup(response.text, "html.parser")
 
-# ✅ Kör endast om detta script körs direkt
-if __name__ == "__main__":
-    update_articles()
+        for article in soup.select(site["article_selector"]):
+            title_tag = article.select_one(site["title_selector"])
+            link_tag = article.select_one(site["link_selector"])
+            text_tag = article.select(site["text_selector"])
+
+            if not title_tag or not link_tag or "href" not in link_tag.attrs:
+                continue
+
+            title = title_tag.text.strip()
+            link = urljoin(site["base_url"], link_tag["href"])
+            text = " ".join([p.get_text(strip=True) for p in text_tag]) if text_tag else "Ingen brödtext tillgänglig"
+
+            article = {
+                "title": title,
+                "link": link,
+                "text": text,
+                "date": datetime.now(timezone.utc).isoformat(),  # ✅ Uppdaterad datetime
+                "source": urlparse(link).netloc.replace("www.", "")
+            }
+
+            articles.append(article)
+
+    return articles
