@@ -64,7 +64,7 @@ def is_duplicate(new_article, articles_list):
 
 # 📰 Skrapa Resume-artiklar (inklusive paywalled content)
 def scrape_resume_articles():
-    base_url = "https://www.resume.se/"
+    base_url = "https://www.resume.se/om/artificiell-intelligens-ai/"
     CHROMEDRIVER_PATH = "/usr/local/bin/chromedriver"
     driver = webdriver.Chrome(service=Service(CHROMEDRIVER_PATH), options=chrome_options)
     driver.get(base_url)
