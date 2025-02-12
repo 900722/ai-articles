@@ -8,6 +8,14 @@ from urllib.parse import urljoin, urlparse
 ARTICLES_FILE = "articles_text.json"
 PREVIOUS_ARTICLES_FILE = "previous_articles_text.json"
 
+# 🔹 Cookies för att skrapa Resume.se i inloggat läge
+RESUME_COOKIES = {
+    "tapet-paywall-session": "s%3AmfB2XE9dhuJhz3Ny8msq3Ofj-e8Y8nNg.f%2BbLNV6cPfSHBs5X4t3KF8bwKhUlCEzjDdqVz8eLbYk",
+    "jwt": "DIN_COOKIE_HÄR",
+    "bnacid": "DIN_COOKIE_HÄR",
+    "bnasid": "DIN_COOKIE_HÄR"
+}
+
 # 🔹 Korrekt lista över sajter att skrapa (med text_selector)
 SITES = [
     {
@@ -16,7 +24,7 @@ SITES = [
         "article_selector": "article.js_watch-teaser",
         "title_selector": "h2.news-item__heading",
         "link_selector": "a[href]",
-        "text_selector": "div.article__lead p",
+        "text_selector": "div.article__lead.global-l-bold p",
         "base_url": "https://www.di.se"
     },
     {
@@ -34,7 +42,7 @@ SITES = [
         "article_selector": "article.post-block",
         "title_selector": "h2.post-block__title",
         "link_selector": "a.post-block__title__link",
-        "text_selector": "div.article-content p",
+        "text_selector": "div.entry-content p",
         "base_url": "https://techcrunch.com"
     },
     {
@@ -43,7 +51,7 @@ SITES = [
         "article_selector": "div.archive-item-component",
         "title_selector": "h2.archive-item-component__title",
         "link_selector": "a.archive-item-component__link",
-        "text_selector": "div.article-body-component p",
+        "text_selector": "div.body__inner-container p",
         "base_url": "https://www.wired.com"
     }
 ]
@@ -67,11 +75,17 @@ def scrape_articles():
     
     for site in SITES:
         print(f"🔍 Skrapar artiklar från: {site['name']}")
-        try:
+        
+        # 🔹 Specialhantering för Resume.se (inloggat läge)
+        if site["name"] == "Resume.se":
+            session = requests.Session()
+            session.cookies.update(RESUME_COOKIES)  # Lägg till cookies
+            response = session.get(site["url"], timeout=10)
+        else:
             response = requests.get(site["url"], timeout=10)
-            response.raise_for_status()
-        except requests.RequestException as e:
-            print(f"⚠️ Misslyckades att hämta {site['name']}: {e}")
+
+        if response.status_code != 200:
+            print(f"⚠️ Misslyckades att hämta {site['name']}: {response.status_code}")
             continue
 
         soup = BeautifulSoup(response.text, "html.parser")
