@@ -83,7 +83,7 @@ def scrape_resume_articles():
 
     articles = []
     soup = BeautifulSoup(driver.page_source, "html.parser")
-    links = [a["href"] for a in soup.select("a") if a["href"].startswith("https://www.resume.se")]
+    links = [a["href"] for a in soup.select("a") if a.has_attr("href") and a["href"].startswith("https://www.resume.se")]
 
     for link in set(links):
         driver.get(link)
