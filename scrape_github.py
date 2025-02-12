@@ -51,7 +51,10 @@ SITES = [
 def get_jwt():
     """Hämta en ny JWT-token från Resume.se"""
     response = requests.get(JWT_URL, headers=HEADERS)
-    
+
+    print("🔎 Statuskod för JWT:", response.status_code)  # Skriver ut statuskoden
+    print("🔎 Svar från servern:", response.text[:500])  # Skriver ut första 500 tecknen i svaret
+
     if response.status_code == 200:
         jwt_token = response.json().get("jwt")
         print("✅ Ny JWT hämtad:", jwt_token[:50] + "...")  # Visa en del av tokenen för verifiering
