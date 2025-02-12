@@ -13,11 +13,13 @@ HEADERS = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 }
 
-# API-endpoints för Resume.se
-JWT_URL = "https://www.resume.se/api/check-entitlements?userActive=true"
-ARTICLE_API_URL = "https://www.resume.se/api/context?articleId={article_id}"
+# Cookies från DevTools för Resume.se
+RESUME_COOKIES = {
+    "jwt": "DITT_JWT_COOKIE_HÄR",
+    "tapet-paywall-session": "DITT_SESSION_COOKIE_HÄR"
+}
 
-# Sajter att skrapa (utom Resume.se, som hanteras via API)
+# Sajter att skrapa (utom Resume.se, som hanteras separat)
 SITES = [
     {
         "name": "DI.se",
@@ -48,65 +50,41 @@ SITES = [
     }
 ]
 
-def get_jwt():
-    """Hämta en ny JWT-token från Resume.se"""
-    response = requests.get(JWT_URL, headers=HEADERS)
-
-    print("🔎 Statuskod för JWT:", response.status_code)  # Skriver ut statuskoden
-    print("🔎 Svar från servern:", response.text[:500])  # Skriver ut första 500 tecknen i svaret
-
-    if response.status_code == 200:
-        jwt_token = response.json().get("jwt")
-        print("✅ Ny JWT hämtad:", jwt_token[:50] + "...")  # Visa en del av tokenen för verifiering
-        return jwt_token
-    else:
-        print("❌ Misslyckades att hämta JWT")
-        return None
-
-def get_article(article_id, jwt_token):
-    """Hämta en artikel från Resume.se med JWT-token"""
-    url = ARTICLE_API_URL.format(article_id=article_id)
-    headers = HEADERS.copy()
-    headers["Authorization"] = f"Bearer {jwt_token}"
-
-    response = requests.get(url, headers=headers)
-
-    if response.status_code == 200:
-        return response.json()
-    else:
-        print(f"❌ Misslyckades att hämta artikel {article_id}")
-        return None
-
-def extract_article_data(article_json):
-    """Extrahera titel, text och metadata från artikelns JSON-data"""
-    title = article_json.get("seoTitle", "Okänd titel")
-    body_parts = article_json.get("bodyParts", [])
-
-    text = " ".join([part["bodyHtml"] for part in body_parts if part["type"] == "paragraph"])
-    
-    return {
-        "title": title,
-        "text": text,
-        "date": datetime.now(timezone.utc).isoformat(),
-        "source": "resume.se"
-    }
-
 def scrape_resume_articles():
-    """Hämta artiklar från Resume.se via API istället för att skrapa HTML"""
+    """Hämta artiklar från Resume.se genom att skrapa HTML istället för API."""
     
-    jwt_token = get_jwt()
-    if not jwt_token:
-        print("❌ Inget JWT-token, avbryter Resume.se-skrapning.")
-        return []
-
-    # Exempel på artikel-ID att testa – byt ut mot dynamisk insamling av ID:n om möjligt
-    article_ids = ["38579619-c934-4ddd-9f0e-376d6aea3727"]
+    # Lista på artikel-URL:er att hämta
+    article_urls = [
+        "https://www.resume.se/fordjupning/granskning/hyper-island-student-jag-har-investerat-allt-nu-riskerar-jag-att-forlora-allt/"
+    ]
 
     articles = []
-    for article_id in article_ids:
-        article_json = get_article(article_id, jwt_token)
-        if article_json:
-            articles.append(extract_article_data(article_json))
+
+    for url in article_urls:
+        response = requests.get(url, headers=HEADERS, cookies=RESUME_COOKIES)
+
+        if response.status_code == 200:
+            soup = BeautifulSoup(response.text, "html.parser")
+
+            # 🔍 Hämta titel
+            title_tag = soup.find("meta", property="og:title")
+            title = title_tag["content"] if title_tag else "Okänd titel"
+
+            # 🔍 Hämta artikelns text (paragrafer)
+            paragraphs = soup.find_all("p")
+            text = " ".join([p.get_text(strip=True) for p in paragraphs])
+
+            articles.append({
+                "title": title,
+                "text": text,
+                "link": url,
+                "date": datetime.now(timezone.utc).isoformat(),
+                "source": "resume.se"
+            })
+            print(f"✅ Artikel hämtad: {title}")
+
+        else:
+            print(f"❌ Misslyckades att hämta artikel från Resume.se: {url}")
 
     return articles
 
@@ -152,7 +130,7 @@ def update_articles():
     previous_articles = load_json_file(PREVIOUS_ARTICLES_FILE)
     previous_titles = {article["title"] for article in previous_articles}
 
-    # 🔹 Skrapa Resume.se via API
+    # 🔹 Skrapa Resume.se via HTML
     new_articles_resume = scrape_resume_articles()
 
     # 🔹 Skrapa andra sajter via BeautifulSoup
