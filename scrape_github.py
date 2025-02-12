@@ -34,15 +34,6 @@ SITES = [
         "link_selector": "a[href]",
         "text_selector": "div.article__lead.global-l-bold p",
         "base_url": "https://www.di.se"
-    },
-    {
-        "name": "Wired",
-        "url": "https://www.wired.com/tag/artificial-intelligence/",
-        "article_selector": "div.archive-item-component",
-        "title_selector": "h2.archive-item-component__title",
-        "link_selector": "a.archive-item-component__link",
-        "text_selector": "div.body__inner-container p",
-        "base_url": "https://www.wired.com"
     }
 ]
 
@@ -114,27 +105,21 @@ def scrape_techcrunch_articles():
     print(f"📡 Hämtar artiklar från TechCrunch RSS ({len(feed.entries)} hittade)")
 
     for entry in feed.entries:
-        article_url = entry.link  # Hämta URL från RSS-flödet
+        article_url = entry.link
 
-        # Använd requests för att hämta sidan
         response = requests.get(article_url)
-
         if response.status_code != 200:
             print(f"⚠️ Kunde inte hämta {article_url} - Statuskod: {response.status_code}")
             continue
 
-        # Skapa BeautifulSoup-objekt
         soup = BeautifulSoup(response.text, "html.parser")
 
-        # Skrapa titel
         title_tag = soup.select_one("h2.post-block__title")
         title = title_tag.text.strip() if title_tag else "Ingen titel hittad"
 
-        # Skrapa brödtext
         text_tag = soup.select("div.entry-content p")
         text = " ".join([p.get_text(strip=True) for p in text_tag]) if text_tag else "Ingen brödtext tillgänglig"
 
-        # Spara artikeln
         article = {
             "title": title,
             "link": article_url,
@@ -148,49 +133,40 @@ def scrape_techcrunch_articles():
 
     return articles
 
-# 📰 Skrapa övriga sajter (DI, Wired)
-def scrape_other_sites():
+# 📰 Skrapa Wired-artiklar via RSS
+def scrape_wired_articles():
+    rss_url = "https://www.wired.com/feed/tag/ai/latest/rss"
+    feed = feedparser.parse(rss_url)
+
     articles = []
-    
-    for site in SITES:
-        print(f"🔍 Skrapar artiklar från: {site['name']}")
+    print(f"📡 Hämtar artiklar från Wired RSS ({len(feed.entries)} hittade)")
 
-        response = requests.get(site["url"])
+    for entry in feed.entries:
+        article_url = entry.link
 
+        response = requests.get(article_url)
         if response.status_code != 200:
-            print(f"⚠️ Misslyckades att hämta {site['name']}: {response.status_code}")
+            print(f"⚠️ Kunde inte hämta {article_url} - Statuskod: {response.status_code}")
             continue
 
         soup = BeautifulSoup(response.text, "html.parser")
 
-        article_count = len(soup.select(site["article_selector"]))
-        print(f"✅ Hittade {article_count} artiklar på {site['name']}")
+        title_tag = soup.select_one("h2.archive-item-component__title")
+        title = title_tag.text.strip() if title_tag else "Ingen titel hittad"
 
-        if article_count == 0:
-            print(f"⚠️ Ingen artikel hittades på {site['name']}! Kontrollera selektorn.")
+        text_tag = soup.select("div.body__inner-container p")
+        text = " ".join([p.get_text(strip=True) for p in text_tag]) if text_tag else "Ingen brödtext tillgänglig"
 
-        for article in soup.select(site["article_selector"]):
-            title_tag = article.select_one(site["title_selector"])
-            link_tag = article.select_one(site["link_selector"])
-            text_tag = article.select(site["text_selector"])
+        article = {
+            "title": title,
+            "link": article_url,
+            "text": text,
+            "date": datetime.utcnow().isoformat(),
+            "source": "wired.com"
+        }
 
-            if not title_tag or not link_tag or "href" not in link_tag.attrs:
-                continue
-
-            title = title_tag.text.strip()
-            link = urljoin(site["base_url"], link_tag["href"])
-            text = " ".join([p.get_text(strip=True) for p in text_tag]) if text_tag else "Ingen brödtext tillgänglig"
-
-            article = {
-                "title": title,
-                "link": link,
-                "text": text,
-                "date": datetime.utcnow().isoformat(),
-                "source": urlparse(link).netloc.replace("www.", "")
-            }
-
-            if not is_duplicate(article, articles):
-                articles.append(article)
+        if not is_duplicate(article, articles):
+            articles.append(article)
 
     return articles
 
@@ -198,12 +174,12 @@ def scrape_other_sites():
 def update_articles():
     previous_articles = load_json_file(PREVIOUS_ARTICLES_FILE)
     new_articles_resume = scrape_resume_articles()
-    new_articles_techcrunch = scrape_techcrunch_articles()  # ✅ TechCrunch via RSS
+    new_articles_techcrunch = scrape_techcrunch_articles()  
+    new_articles_wired = scrape_wired_articles()  # ✅ Wired via RSS
     new_articles_other = scrape_other_sites()
 
-    all_articles = previous_articles + new_articles_resume + new_articles_techcrunch + new_articles_other
+    all_articles = previous_articles + new_articles_resume + new_articles_techcrunch + new_articles_wired + new_articles_other
 
-    # Ta bort eventuella dubbletter
     unique_articles = {article["link"]: article for article in all_articles}.values()
 
     save_json_file(ARTICLES_FILE, list(unique_articles))
