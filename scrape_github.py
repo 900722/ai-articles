@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
 from bs4 import BeautifulSoup
 import requests
 from urllib.parse import urljoin, urlparse
@@ -77,7 +77,8 @@ def is_duplicate(new_article, articles_list):
 # 📰 Skrapa Resume-artiklar (inklusive paywalled content)
 def scrape_resume_articles():
     base_url = "https://www.resume.se/"
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+    CHROMEDRIVER_PATH = "/usr/local/bin/chromedriver"  # Sökväg till ChromeDriver från workflow
+    driver = webdriver.Chrome(service=Service(CHROMEDRIVER_PATH), options=chrome_options)
     driver.get(base_url)
 
     articles = []
