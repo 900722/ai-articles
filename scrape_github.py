@@ -120,7 +120,7 @@ def scrape_techcrunch_articles():
 
         soup = BeautifulSoup(response.text, "html.parser")
 
-        title_tag = soup.select_one("h2.post-block__title")
+        title_tag = soup.select_one("h1.article-hero__title.wp-block-post-title")
         title = title_tag.text.strip() if title_tag else "Ingen titel hittad"
 
         text_tag = soup.select("div.entry-content p")
@@ -157,7 +157,7 @@ def scrape_wired_articles():
 
         soup = BeautifulSoup(response.text, "html.parser")
 
-        title_tag = soup.select_one("h2.archive-item-component__title")
+        title_tag = soup.select_one('[data-testid="ContentHeaderHed"]')
         title = title_tag.text.strip() if title_tag else "Ingen titel hittad"
 
         text_tag = soup.select("div.body__inner-container p")
