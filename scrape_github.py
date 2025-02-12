@@ -1,8 +1,12 @@
 import json
 import requests
 from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
 from datetime import datetime, timezone
 from urllib.parse import urljoin, urlparse
+import time
 
 # Filnamn
 ARTICLES_FILE = "articles_text.json"
@@ -15,9 +19,12 @@ HEADERS = {
 
 # Cookies från DevTools för Resume.se
 RESUME_COOKIES = {
-    "jwt": "DITT_JWT_COOKIE_HÄR",
-    "tapet-paywall-session": "DITT_SESSION_COOKIE_HÄR"
+    "jwt": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBldHJvbmVsbGEuYmFydmFldXNAZ21haWwuY29tIiwiZ2l2ZW5fbmFtZSI6IlBldHJvbmVsbGEiLCJmYW1pbHlfbmFtZSI6IkJhcnZhZXVzIiwidmVyaWZpZWRFbWFpbCI6dHJ1ZSwiZW50aXRsZWQiOnRydWUsInBsdXNBbGx0Ijp0cnVlLCJoYXNoZWRVc2VySWQiOiI5NTE2MjhkZGViYjg5NzVmYjdlNTAwNWFkZWVkZDIyYjhmMjM1NDQxOTAxYjAyNGZlNThjYThkOWQ2MTlkMTI5IiwiaWF0IjoxNzM5MzgzODI3LCJpc3MiOiJyZXN1bWUiLCJzdWIiOiJiYm0tcmVzOi8vMDA1MjAxYTMtMzAyYS00MDc2LTllMmEtYjU4MDk4ZWQ4NzVhIn0.b0bCGvZun4hk3yIwQbOfDS2Rs-yaVQextcbU6C3TkmM9rMldfrZmGk6j269yacTBOKhvquprn1DZ5AYV7go55EKlcSrG9M1CMsB4Qvj-gtWPTMSovlya5TFGVPAsVnqF_yer-LhZkBx68r1OBfdNiYJ74tnHpp4dxbHUHayaZAFla7GNqOkwsKd--j06QJGMZS8cCGb4puOnc0M35gBYyeIQG0z0r4bDCinzKbFNDxMFC9D_eEXeNUMmpURS9fKwGnkKKXVlcQVCiNmcgee7pRCvF-_04b2mVCgjPjdN1VHRqxGNRNZ-VUUXat2zlDH4A6qdw0CPcW5Nsx1i25ZHfcoW5AxAnoKnNYWwywwXjOS-kEo9xz4d4QiD90Whu0k6b9A0ThgCnvHxYHN3MRxqC_UJk7ZhM6QnvehO9mZVyCJQl6qnQI1MLCvdvIivP73XCo4TaIjZS5BISz-Q_b_fZADteTYRrrUvD01JYyeQ3IDn_mL5ZdcXCKvSstPPvRHgV_xc6_AU2-JnuAGhtNG0_C4lCm4pCTP70jSKm5uw0XxjstNULCzg320PMrrz64I7dVK6p8ZUorZdvPvETlr4MhqsLCzcezculat-wiis4J0qQL0_bTQwL16TNDTf8XeMET9R3mtUSFK7XC3dHoAUzcbB_WwsPPwrCs0HwFmVpuo",
+    "tapet-paywall-session": "s%3AmfB2XE9dhuJhz3Ny8msq3Ofj-e8Y8nNg.f%2BbLNV6cPfSHBs5X4t3KF8bwKhUICEzjDdqVz8eLbYk"
 }
+
+# URL till Resume.se:s AI-nyheter
+RESUME_NEWS_URL = "https://www.resume.se/om/artificiell-intelligens-ai/"
 
 # Sajter att skrapa (utom Resume.se, som hanteras separat)
 SITES = [
@@ -31,12 +38,21 @@ SITES = [
         "base_url": "https://www.di.se"
     },
     {
+        "name": "Breakit",
+        "url": "https://www.breakit.se/tag/ai",
+        "article_selector": "article.teaser",
+        "title_selector": "h2.teaser__heading",
+        "link_selector": "a.teaser__link",
+        "text_selector": "div.article__body p",
+        "base_url": "https://www.breakit.se"
+    },
+    {
         "name": "TechCrunch",
         "url": "https://techcrunch.com/tag/artificial-intelligence/",
         "article_selector": "article.post-block",
         "title_selector": "h2.post-block__title",
         "link_selector": "a.post-block__title__link",
-        "text_selector": "div.entry-content p",
+        "text_selector": "div.article-content p",
         "base_url": "https://techcrunch.com"
     },
     {
@@ -50,43 +66,80 @@ SITES = [
     }
 ]
 
+def get_resume_article_links():
+    """Hämta alla artikel-länkar från Resume.se:s AI-sektion."""
+    response = requests.get(RESUME_NEWS_URL, headers=HEADERS)
+
+    if response.status_code != 200:
+        print(f"❌ Misslyckades att hämta Resume.se: {response.status_code}")
+        return []
+
+    soup = BeautifulSoup(response.text, "html.parser")
+
+    # 🔍 Hitta alla artikellänkar
+    article_links = []
+    for article in soup.select("article a[href]"):
+        link = urljoin("https://www.resume.se", article["href"])
+        article_links.append(link)
+
+    print(f"✅ Hittade {len(article_links)} artiklar på Resume.se")
+    return article_links
+
 def scrape_resume_articles():
-    """Hämta artiklar från Resume.se genom att skrapa HTML istället för API."""
+    """Skrapa nya Resume.se-artiklar dynamiskt och hämta brödtext med Selenium."""
     
-    # Lista på artikel-URL:er att hämta
-    article_urls = [
-        "https://www.resume.se/fordjupning/granskning/hyper-island-student-jag-har-investerat-allt-nu-riskerar-jag-att-forlora-allt/"
-    ]
+    # Hämta alla artikel-länkar från Resume.se
+    article_urls = get_resume_article_links()
+
+    # Läs in tidigare skrapade artiklar
+    previous_articles = load_json_file(PREVIOUS_ARTICLES_FILE)
+    previous_titles = {article["title"] for article in previous_articles}
 
     articles = []
 
+    # Konfigurera Selenium WebDriver
+    options = Options()
+    options.add_argument("--headless")  # Kör utan att öppna fönster
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--disable-gpu")
+    options.add_argument(f"user-agent={HEADERS['User-Agent']}")
+
+    driver = webdriver.Chrome(options=options)
+
     for url in article_urls:
-        response = requests.get(url, headers=HEADERS, cookies=RESUME_COOKIES)
+        driver.get(url)
+        time.sleep(5)  # Vänta på att sidan ska ladda
 
-        if response.status_code == 200:
-            soup = BeautifulSoup(response.text, "html.parser")
+        # 🔍 Hämta titel
+        try:
+            title_tag = driver.find_element(By.CSS_SELECTOR, "meta[property='og:title']")
+            title = title_tag.get_attribute("content") if title_tag else "Okänd titel"
+        except:
+            title = "Okänd titel"
 
-            # 🔍 Hämta titel
-            title_tag = soup.find("meta", property="og:title")
-            title = title_tag["content"] if title_tag else "Okänd titel"
+        # Skippa artiklar vi redan har
+        if title in previous_titles:
+            print(f"🔄 Artikel redan skrapad: {title}")
+            continue
 
-            # 🔍 Hämta artikelns text (paragrafer)
-            # 🔍 Hämta brödtext endast från div.paywalled p
-            paywalled_section = soup.select("div.paywalled p")
-            text = " ".join([p.get_text(strip=True) for p in paywalled_section]) if paywalled_section else "Ingen brödtext tillgänglig"
+        # 🔍 Hämta brödtext från div.paywalled p
+        try:
+            paragraphs = driver.find_elements(By.CSS_SELECTOR, "div.paywalled p")
+            text = " ".join([p.text.strip() for p in paragraphs]) if paragraphs else "Ingen brödtext tillgänglig"
+        except:
+            text = "Ingen brödtext tillgänglig"
 
-            articles.append({
-                "title": title,
-                "text": text,
-                "link": url,
-                "date": datetime.now(timezone.utc).isoformat(),
-                "source": "resume.se"
-            })
-            print(f"✅ Artikel hämtad: {title}")
+        articles.append({
+            "title": title,
+            "text": text,
+            "link": url,
+            "date": datetime.now(timezone.utc).isoformat(),
+            "source": "resume.se"
+        })
+        print(f"✅ Artikel hämtad: {title}")
 
-        else:
-            print(f"❌ Misslyckades att hämta artikel från Resume.se: {url}")
-
+    driver.quit()
     return articles
 
 def scrape_other_sites():
@@ -131,7 +184,7 @@ def update_articles():
     previous_articles = load_json_file(PREVIOUS_ARTICLES_FILE)
     previous_titles = {article["title"] for article in previous_articles}
 
-    # 🔹 Skrapa Resume.se via HTML
+    # 🔹 Skrapa Resume.se dynamiskt
     new_articles_resume = scrape_resume_articles()
 
     # 🔹 Skrapa andra sajter via BeautifulSoup
@@ -152,19 +205,6 @@ def update_articles():
     save_json_file(PREVIOUS_ARTICLES_FILE, all_articles)
 
     print(f"✅ Sparade {len(fresh_articles)} nya artiklar.")
-
-def load_json_file(filename):
-    """Ladda en JSON-fil om den finns, annars returnera en tom lista."""
-    try:
-        with open(filename, "r", encoding="utf-8") as file:
-            return json.load(file)
-    except (FileNotFoundError, json.JSONDecodeError):
-        return []
-
-def save_json_file(filename, data):
-    """Spara data i en JSON-fil."""
-    with open(filename, "w", encoding="utf-8") as file:
-        json.dump(data, file, indent=4, ensure_ascii=False)
 
 if __name__ == "__main__":
     update_articles()
