@@ -24,6 +24,12 @@ chrome_options.add_argument("--disable-dev-shm-usage")
 ARTICLES_FILE = "articles_text.json"
 PREVIOUS_ARTICLES_FILE = "previous_articles_text.json"
 
+# Skapa previous_articles_text.json om den saknas
+if not os.path.exists(PREVIOUS_ARTICLES_FILE):
+    print(f"📁 Skapar {PREVIOUS_ARTICLES_FILE} eftersom den saknas.")
+    with open(PREVIOUS_ARTICLES_FILE, "w", encoding="utf-8") as f:
+        json.dump([], f, ensure_ascii=False, indent=4)
+
 # Sajter att skrapa (med korrekta selektorer)
 SITES = [
     {
@@ -86,7 +92,7 @@ def scrape_resume_articles():
             "title": soup.find("h1").get_text(strip=True),
             "text": text if text else "Ingen brödtext tillgänglig",
             "link": link,
-            "date": datetime.now(timezone.utc).isoformat(),  # ✅ Uppdaterad datetime
+            "date": datetime.now(timezone.utc).isoformat(),
             "source": "resume.se",
         }
 
@@ -124,7 +130,7 @@ def scrape_techcrunch_articles():
             "title": title,
             "link": article_url,
             "text": text,
-            "date": datetime.now(timezone.utc).isoformat(),  # ✅ Uppdaterad datetime
+            "date": datetime.now(timezone.utc).isoformat(),
             "source": "techcrunch.com"
         }
 
@@ -161,7 +167,7 @@ def scrape_wired_articles():
             "title": title,
             "link": article_url,
             "text": text,
-            "date": datetime.now(timezone.utc).isoformat(),  # ✅ Uppdaterad datetime
+            "date": datetime.now(timezone.utc).isoformat(),
             "source": "wired.com"
         }
 
@@ -201,7 +207,7 @@ def scrape_other_sites():
                 "title": title,
                 "link": link,
                 "text": text,
-                "date": datetime.now(timezone.utc).isoformat(),  # ✅ Uppdaterad datetime
+                "date": datetime.now(timezone.utc).isoformat(),
                 "source": urlparse(link).netloc.replace("www.", "")
             }
 
