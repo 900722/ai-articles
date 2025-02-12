@@ -71,8 +71,9 @@ def scrape_resume_articles():
             title = title_tag["content"] if title_tag else "Okänd titel"
 
             # 🔍 Hämta artikelns text (paragrafer)
-            paragraphs = soup.find_all("p")
-            text = " ".join([p.get_text(strip=True) for p in paragraphs])
+            # 🔍 Hämta brödtext endast från div.paywalled p
+            paywalled_section = soup.select("div.paywalled p")
+            text = " ".join([p.get_text(strip=True) for p in paywalled_section]) if paywalled_section else "Ingen brödtext tillgänglig"
 
             articles.append({
                 "title": title,
