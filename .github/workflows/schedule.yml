@@ -23,9 +23,20 @@ jobs:
           sudo apt-get install -y google-chrome-stable
           CHROME_VERSION=$(google-chrome --version | awk '{print $3}' | cut -d '.' -f1)
           CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
+    
+          echo "🔍 Laddar ner ChromeDriver version: $CHROMEDRIVER_VERSION"
+    
           wget -q -O /tmp/chromedriver.zip "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip"
+    
+          if [ $? -ne 0 ]; then
+              echo "❌ ChromeDriver-nedladdning misslyckades!"
+              exit 1
+          fi
+
           sudo unzip /tmp/chromedriver.zip -d /usr/local/bin/
           sudo chmod +x /usr/local/bin/chromedriver
+          sudo ln -sf /usr/local/bin/chromedriver /usr/bin/chromedriver
+
           echo "✅ Chrome och ChromeDriver installerade"
 
       - name: Kontrollera Python-miljö och installerade paket (felsökning)
