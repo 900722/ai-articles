@@ -21,22 +21,37 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable
-          CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE")
-    
-          echo "🔍 Laddar ner ChromeDriver version: $CHROMEDRIVER_VERSION"
-    
-          wget -q -O /tmp/chromedriver.zip "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip"
-    
+
+          # Hämta den installerade Chrome-versionen
+          CHROME_VERSION=$(google-chrome --version | awk '{print $3}')
+          CHROME_MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d '.' -f1)
+
+          # Hämta rätt ChromeDriver-version
+          CHROMEDRIVER_URL="https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/$CHROME_VERSION/linux64/chromedriver-linux64.zip"
+
+          echo "🔍 Laddar ner ChromeDriver för Chrome version: $CHROME_VERSION från $CHROMEDRIVER_URL"
+
+          wget -q -O /tmp/chromedriver.zip "$CHROMEDRIVER_URL"
+
           if [ $? -ne 0 ]; then
-              echo "❌ ChromeDriver-nedladdning misslyckades!"
-              exit 1
+              echo "❌ ChromeDriver-nedladdning misslyckades! Testar fallback-metod..."
+              CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_MAJOR_VERSION")
+              CHROMEDRIVER_URL="https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip"
+              wget -q -O /tmp/chromedriver.zip "$CHROMEDRIVER_URL"
+              if [ $? -ne 0 ]; then
+                  echo "❌ ChromeDriver-nedladdning misslyckades igen! Avbryter."
+                  exit 1
+              fi
           fi
 
           sudo unzip /tmp/chromedriver.zip -d /usr/local/bin/
           sudo chmod +x /usr/local/bin/chromedriver
           sudo ln -sf /usr/local/bin/chromedriver /usr/bin/chromedriver
 
-          echo "✅ Chrome och ChromeDriver installerade"
+          echo "✅ Chrome och ChromeDriver installerade korrekt!"
+
+          # Kontrollera att rätt version av ChromeDriver används
+          chromedriver --version
 
       - name: Kontrollera Python-miljö och installerade paket (felsökning)
         run: |
