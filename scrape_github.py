@@ -178,6 +178,19 @@ def scrape_other_sites():
 
     return articles
 
+def load_json_file(filename):
+    """Ladda en JSON-fil om den finns, annars returnera en tom lista."""
+    try:
+        with open(filename, "r", encoding="utf-8") as file:
+            return json.load(file)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return []  # Om filen saknas, returnera en tom lista
+
+def save_json_file(filename, data):
+    """Spara data i en JSON-fil."""
+    with open(filename, "w", encoding="utf-8") as file:
+        json.dump(data, file, indent=4, ensure_ascii=False)
+
 def update_articles():
     """Uppdatera JSON-filer med nya artiklar och spara historik."""
     
