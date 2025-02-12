@@ -43,5 +43,5 @@ jobs:
 
       - name: Commit och pusha uppdaterade filer
         run: |
-          git add articles_text.json
+          git add articles_text.json previous_articles_text.json
           git diff --staged --quiet || (git commit -m "🔄 Automatiskt uppdaterade artiklar" && git push origin main)
