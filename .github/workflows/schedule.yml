@@ -45,6 +45,9 @@ jobs:
           fi
 
           sudo unzip /tmp/chromedriver.zip -d /usr/local/bin/
+          
+          # Flytta den faktiska chromedriver-filen till rätt plats
+          sudo mv /usr/local/bin/chromedriver-linux64/chromedriver /usr/local/bin/chromedriver
           sudo chmod +x /usr/local/bin/chromedriver
           sudo ln -sf /usr/local/bin/chromedriver /usr/bin/chromedriver
 
