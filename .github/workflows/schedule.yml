@@ -1,4 +1,4 @@
-name: Kör AI-artiklar script dagligen
+name: Kör AI artiklar script dagligen
 
 on:
   schedule:
@@ -13,12 +13,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Installera Python och beroenden
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'  # Säkerställ att Python är installerat
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install requests beautifulsoup4 feedparser
 
-      - name: Installera pip-paket
-        run: pip install requests beautifulsoup4
+      - name: Kontrollera Python-miljö och installerade paket (felsökning)
+        run: |
+          python3 --version
+          pip list
 
       - name: Lista alla filer (felsökning)
         run: ls -la
@@ -29,45 +31,17 @@ jobs:
       - name: Konfigurera SSH för autentisering
         run: |
           mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-          echo "${{ secrets.GH_SSH }}" | tr -d '\r' > ~/.ssh/id_rsa
+          echo "${{ secrets.GH_SSH }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan github.com > ~/.ssh/known_hosts
-          chmod 644 ~/.ssh/known_hosts
-          eval "$(ssh-agent -s)"
-          ssh-add ~/.ssh/id_rsa
-          ssh-add -l  # Kontrollera att nyckeln har laddats
-          unset GH_SSH  # Rensar miljövariabeln efter användning för ökad säkerhet
-
-      - name: Testa SSH-anslutning
-        run: ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -T git@github.com || true
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
 
       - name: Ställ in Git och autentisering
         run: |
-         git config --global user.email "lisa@maniola.se"
-         git config --global user.name "900722"
-         git remote remove origin || true
-         git remote add origin git@github.com:900722/ai-articles.git  # Ändra från HTTPS till SSH
-         git fetch --all
-         git remote -v
-
-      - name: Kontrollera om det finns ändringar
-        run: git status --short
+          git config --global user.email "lisa@maniola.se"
+          git config --global user.name "900722"
+          git remote set-url origin git@github.com:900722/ai-articles.git
 
       - name: Commit och pusha uppdaterade filer
         run: |
-          if [ -f articles.json ] && [ -f previous_articles.json ]; then
-            git add articles.json previous_articles.json
-          else
-            echo "❗ Fil saknas, hoppar över commit."
-            exit 0
-          fi
-
-          # Kontrollera om det finns några ändringar att commit:a
-          if git diff --cached --quiet; then
-            echo "✅ Inga ändringar att commit:a. Skippar push."
-          else
-            git commit -m "🔄 Automatiskt uppdaterade artiklar"
-            git log -1 --oneline
-            GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" git push origin main
-          fi
+          git add articles_text.json
+          git diff --staged --quiet || (git commit -m "🔄 Automatiskt uppdaterade artiklar" && git push origin main)
