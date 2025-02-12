@@ -15,7 +15,13 @@ jobs:
       - name: Installera Python och beroenden
         run: |
           python3 -m pip install --upgrade pip
-          pip install requests beautifulsoup4 feedparser
+          pip install requests beautifulsoup4 feedparser selenium
+
+      - name: Installera Chrome WebDriver (för Selenium)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y chromium-browser chromium-chromedriver
+          echo "✅ Chrome och WebDriver installerade"
 
       - name: Kontrollera Python-miljö och installerade paket (felsökning)
         run: |
