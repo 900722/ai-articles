@@ -214,3 +214,38 @@ def scrape_other_sites():
             articles.append(article)
 
     return articles
+# 🔄 Uppdatera JSON-filer och undvik dubbletter
+def update_articles():
+    print("🔄 Startar uppdatering av artiklar...")
+
+    previous_articles = load_json_file(PREVIOUS_ARTICLES_FILE)
+
+    print("📡 Skrapar Resume-artiklar...")
+    new_articles_resume = scrape_resume_articles()
+    print(f"✅ Skrapade {len(new_articles_resume)} artiklar från Resume.se")
+
+    print("📡 Skrapar TechCrunch...")
+    new_articles_techcrunch = scrape_techcrunch_articles()
+    print(f"✅ Skrapade {len(new_articles_techcrunch)} artiklar från TechCrunch")
+
+    print("📡 Skrapar Wired...")
+    new_articles_wired = scrape_wired_articles()
+    print(f"✅ Skrapade {len(new_articles_wired)} artiklar från Wired")
+
+    print("📡 Skrapar DI.se...")
+    new_articles_other = scrape_other_sites()
+    print(f"✅ Skrapade {len(new_articles_other)} artiklar från DI.se")
+
+    all_articles = previous_articles + new_articles_resume + new_articles_techcrunch + new_articles_wired + new_articles_other
+
+    # Ta bort eventuella dubbletter
+    unique_articles = {article["link"]: article for article in all_articles}.values()
+
+    save_json_file(ARTICLES_FILE, list(unique_articles))
+    save_json_file(PREVIOUS_ARTICLES_FILE, list(unique_articles))
+
+    print(f"✅ Sparade {len(unique_articles)} artiklar i {ARTICLES_FILE}")
+
+if __name__ == "__main__":
+    update_articles()
+
