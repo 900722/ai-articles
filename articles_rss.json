@@ -312170,5 +312170,572 @@
         "Länk": "https://www.di.se/live/pa-loningsdagen-fler-banker-teknikstrular/",
         "Publicerad": "Fri, 25 Sep 2026 11:03:01 GMT",
         "Hämtad": "2026-09-25 12:41:51"
+    },
+    {
+        "Källa": "Resume",
+        "Titel": "Charlotte Witte tillbaka i Sverige: ”Får gärna vara lite uppförsbacke”",
+        "Länk": "https://www.resume.se/fordjupning/helgintervjuer/charlotte-witte-tillbaka-i-sverige-far-garna-vara-lite-uppforsbacke/",
+        "Publicerad": "Sat, 26 Sep 2026 04:00:00 GMT",
+        "Hämtad": "2026-09-26 12:09:39"
+    },
+    {
+        "Källa": "Resume",
+        "Titel": "Andreas Rågsjö Thorell: Om Tiktok är så farligt – varför är politikerna kvar?",
+        "Länk": "https://www.resume.se/opinion/kronika/andreas-ragsjo-thorell-om-tiktok-ar-sa-farligt-varfor-ar-politikerna-kvar/",
+        "Publicerad": "Fri, 25 Sep 2026 13:25:27 GMT",
+        "Hämtad": "2026-09-26 12:09:39"
+    },
+    {
+        "Källa": "Resume",
+        "Titel": "Firar 170 år – med modellen som gjorde stövlar till mode",
+        "Länk": "https://www.resume.se/marknadsforing/kampanj/firar-170-ar-med-modellen-som-gjorde-stovlar-till-mode/",
+        "Publicerad": "Fri, 25 Sep 2026 13:15:00 GMT",
+        "Hämtad": "2026-09-26 12:09:39"
+    },
+    {
+        "Källa": "TechCrunch",
+        "Titel": "At Meta Connect, the company’s smart glasses were everywhere",
+        "Länk": "https://techcrunch.com/2026/09/25/at-meta-connect-the-companys-smart-glasses-were-everywhere/",
+        "Publicerad": "Sat, 26 Sep 2026 01:08:57 +0000",
+        "Hämtad": "2026-09-26 12:09:39"
+    },
+    {
+        "Källa": "TechCrunch",
+        "Titel": "Crusoe abandons $1.25B plan to use Boom turbines at AI data centers",
+        "Länk": "https://techcrunch.com/2026/09/25/crusoe-abandons-1-25b-plan-to-use-boom-turbines-at-ai-data-centers/",
+        "Publicerad": "Fri, 25 Sep 2026 23:11:10 +0000",
+        "Hämtad": "2026-09-26 12:09:39"
+    },
+    {
+        "Källa": "TechCrunch",
+        "Titel": "Automattic has a new board after failed attempt to put CEO on leave",
+        "Länk": "https://techcrunch.com/2026/09/25/automattic-has-a-new-board-after-failed-attempt-to-put-ceo-on-leave/",
+        "Publicerad": "Fri, 25 Sep 2026 23:04:34 +0000",
+        "Hämtad": "2026-09-26 12:09:39"
+    },
+    {
+        "Källa": "TechCrunch",
+        "Titel": "Unsecured OpenAI agents posted 53 user images on the internet without the lab’s knowledge",
+        "Länk": "https://techcrunch.com/2026/09/25/unsecured-openai-agents-posted-53-user-images-on-the-internet-without-the-labs-knowledge/",
+        "Publicerad": "Fri, 25 Sep 2026 22:20:47 +0000",
+        "Hämtad": "2026-09-26 12:09:39"
+    },
+    {
+        "Källa": "TechCrunch",
+        "Titel": "Meta opens early access program for new Muse features",
+        "Länk": "https://techcrunch.com/2026/09/25/meta-opens-early-access-program-for-new-muse-features/",
+        "Publicerad": "Fri, 25 Sep 2026 20:34:53 +0000",
+        "Hämtad": "2026-09-26 12:09:39"
+    },
+    {
+        "Källa": "TechCrunch",
+        "Titel": "The hottest new hangout for middle schoolers is NPR’s comment section?",
+        "Länk": "https://techcrunch.com/2026/09/25/the-hottest-new-hangout-for-middle-schoolers-is-nprs-comment-section/",
+        "Publicerad": "Fri, 25 Sep 2026 20:33:58 +0000",
+        "Hämtad": "2026-09-26 12:09:39"
+    },
+    {
+        "Källa": "TechCrunch",
+        "Titel": "Anthropic to pay Akamai $11.6 billion over seven years in cloud deal",
+        "Länk": "https://techcrunch.com/2026/09/25/anthropic-to-pay-akamai-11-6-billion-over-seven-years-in-cloud-deal/",
+        "Publicerad": "Fri, 25 Sep 2026 19:13:38 +0000",
+        "Hämtad": "2026-09-26 12:09:39"
+    },
+    {
+        "Källa": "TechCrunch",
+        "Titel": "Mark Wahlberg is coming to TechCrunch Disrupt 2026, and he wants to talk about your work, not his",
+        "Länk": "https://techcrunch.com/2026/09/25/mark-wahlberg-is-coming-to-techcrunch-disrupt-2026/",
+        "Publicerad": "Fri, 25 Sep 2026 18:48:33 +0000",
+        "Hämtad": "2026-09-26 12:09:39"
+    },
+    {
+        "Källa": "TechCrunch",
+        "Titel": "Ahead of US IPO, British AI neocloud Nscale secures $3.36B in convertible financing",
+        "Länk": "https://techcrunch.com/2026/09/25/ahead-of-u-s-ipo-british-ai-neocloud-nscale-secures-3-36b-in-convertible-finacing/",
+        "Publicerad": "Fri, 25 Sep 2026 18:33:59 +0000",
+        "Hämtad": "2026-09-26 12:09:39"
+    },
+    {
+        "Källa": "TechCrunch",
+        "Titel": "The Aeropod automates soil aeration without robotics — see it at TechCrunch Disrupt",
+        "Länk": "https://techcrunch.com/2026/09/25/the-aeropod-automates-soil-aeration-without-robotics-see-it-at-techcrunch-disrupt/",
+        "Publicerad": "Fri, 25 Sep 2026 17:30:00 +0000",
+        "Hämtad": "2026-09-26 12:09:39"
+    },
+    {
+        "Källa": "TechCrunch",
+        "Titel": "Some Supabase customers are publicly exposing reams of people’s data to the web",
+        "Länk": "https://techcrunch.com/2026/09/25/some-supabase-customers-are-publicly-exposing-reams-of-peoples-data-to-the-web/",
+        "Publicerad": "Fri, 25 Sep 2026 17:29:46 +0000",
+        "Hämtad": "2026-09-26 12:09:39"
+    },
+    {
+        "Källa": "TechCrunch",
+        "Titel": "Astra and Opus just passed Turing’s other test",
+        "Länk": "https://techcrunch.com/2026/09/25/astra-and-opus-just-passed-turings-other-test/",
+        "Publicerad": "Fri, 25 Sep 2026 17:24:36 +0000",
+        "Hämtad": "2026-09-26 12:09:39"
+    },
+    {
+        "Källa": "TechCrunch",
+        "Titel": "Meta is putting its muscle behind Muse as the AI app takes off",
+        "Länk": "https://techcrunch.com/2026/09/25/meta-is-putting-its-muscle-behind-muse-as-the-ai-app-takes-off/",
+        "Publicerad": "Fri, 25 Sep 2026 16:16:52 +0000",
+        "Hämtad": "2026-09-26 12:09:39"
+    },
+    {
+        "Källa": "TechCrunch",
+        "Titel": "Meta’s AI Tamagotchi bet is…working?",
+        "Länk": "https://techcrunch.com/video/will-metas-ai-tamagotchi-bet-isworking/",
+        "Publicerad": "Fri, 25 Sep 2026 16:00:00 +0000",
+        "Hämtad": "2026-09-26 12:09:39"
+    },
+    {
+        "Källa": "TechCrunch",
+        "Titel": "Kiteworks urges customers to shut down their servers amid ‘imminent’ threat of cyberattack",
+        "Länk": "https://techcrunch.com/2026/09/25/kiteworks-urges-customers-to-shut-down-their-servers-amid-imminent-threat-of-cyberattack/",
+        "Publicerad": "Fri, 25 Sep 2026 15:52:13 +0000",
+        "Hämtad": "2026-09-26 12:09:39"
+    },
+    {
+        "Källa": "TechCrunch",
+        "Titel": "For months, OpenAI’s agent swarms have been attacking online databases to find obscure facts",
+        "Länk": "https://techcrunch.com/2026/09/25/for-months-openais-agent-swarms-have-been-attacking-online-databases-to-find-obscure-facts/",
+        "Publicerad": "Fri, 25 Sep 2026 15:48:14 +0000",
+        "Hämtad": "2026-09-26 12:09:39"
+    },
+    {
+        "Källa": "TechCrunch",
+        "Titel": "Anthropic’s founders seek voting control ahead of IPO",
+        "Länk": "https://techcrunch.com/2026/09/25/anthropics-founders-seek-voting-control-ahead-of-ipo/",
+        "Publicerad": "Fri, 25 Sep 2026 15:40:03 +0000",
+        "Hämtad": "2026-09-26 12:09:39"
+    },
+    {
+        "Källa": "TechCrunch",
+        "Titel": "Tesla finally moves to electrify trucking after a decade of work and delays",
+        "Länk": "https://techcrunch.com/2026/09/25/tesla-finally-moves-to-electrify-trucking-after-a-decade-of-work-and-delays/",
+        "Publicerad": "Fri, 25 Sep 2026 15:24:50 +0000",
+        "Hämtad": "2026-09-26 12:09:39"
+    },
+    {
+        "Källa": "TechCrunch",
+        "Titel": "TechCrunch Disrupt 2026: Ricursive Intelligence’s Anna Goldie and Azalia Mirhoseini on when AI starts designing its own hardware",
+        "Länk": "https://techcrunch.com/2026/09/25/techcrunch-disrupt-2026-ricursive-intelligences-anna-goldie-and-azalia-mirhoseini-on-when-ai-starts-designing-its-own-hardware/",
+        "Publicerad": "Fri, 25 Sep 2026 15:00:00 +0000",
+        "Hämtad": "2026-09-26 12:09:39"
+    },
+    {
+        "Källa": "TechCrunch",
+        "Titel": "Affected by layoffs? Don’t miss this $75 deal for your TechCrunch Disrupt 2026 Expo+ Pass",
+        "Länk": "https://techcrunch.com/2026/09/25/disrupt-2026-layoff-expo-plus-passes-available-for-75-dollars/",
+        "Publicerad": "Fri, 25 Sep 2026 14:15:00 +0000",
+        "Hämtad": "2026-09-26 12:09:39"
+    },
+    {
+        "Källa": "Wired AI",
+        "Titel": "Meta’s Muse Is Adults-Only. Why Does It Look Like a Kids’ Toy?",
+        "Länk": "https://www.wired.com/story/meta-muse-is-adults-only-why-does-it-look-like-a-cute-kids-toy/",
+        "Publicerad": "Sat, 26 Sep 2026 10:30:00 +0000",
+        "Hämtad": "2026-09-26 12:09:39"
+    },
+    {
+        "Källa": "Wired AI",
+        "Titel": "Thieves Stole ‘Nvidia’ Trailers. They Got 20 Tons of Sand",
+        "Länk": "https://www.wired.com/story/thieves-stole-nvidia-trailers-they-got-20-tons-of-sand/",
+        "Publicerad": "Fri, 25 Sep 2026 20:30:40 +0000",
+        "Hämtad": "2026-09-26 12:09:39"
+    },
+    {
+        "Källa": "Wired AI",
+        "Titel": "Appeals Court Lets the Pentagon Designate Anthropic a Supply-Chain Risk",
+        "Länk": "https://www.wired.com/story/appeals-court-lets-the-pentagon-designate-anthropic-a-supply-chain-risk/",
+        "Publicerad": "Fri, 25 Sep 2026 16:58:20 +0000",
+        "Hämtad": "2026-09-26 12:09:39"
+    },
+    {
+        "Källa": "The Verge",
+        "Titel": "Pokémon card resellers have turned collecting into an online blood sport",
+        "Länk": "https://www.theverge.com/games/1001002/pokemon-30th-celebration-scalping-resellers",
+        "Publicerad": "2026-09-26T08:00:00-04:00",
+        "Hämtad": "2026-09-26 12:09:40"
+    },
+    {
+        "Källa": "The Verge",
+        "Titel": "Can &#8216;eSUV&#8217; e-bikes really go from trail to town?",
+        "Länk": "https://www.theverge.com/transportation/999785/amflow-tl-review-avinox-esuv-e-bike-avinox",
+        "Publicerad": "2026-09-26T03:00:00-04:00",
+        "Hämtad": "2026-09-26 12:09:40"
+    },
+    {
+        "Källa": "The Verge",
+        "Titel": "Roku&#8217;s first OLED TVs are up to $400 off, starting at $699",
+        "Länk": "https://www.theverge.com/gadgets/1000859/roku-pro-series-oled-nothing-phone-4a-pro-deal-sale",
+        "Publicerad": "2026-09-25T14:18:57-04:00",
+        "Hämtad": "2026-09-26 12:09:40"
+    },
+    {
+        "Källa": "The Verge",
+        "Titel": "Phones don’t have lights",
+        "Länk": "https://www.theverge.com/podcast/1000751/vergecast-meta-connect-muse-googlebooks",
+        "Publicerad": "2026-09-25T13:42:59-04:00",
+        "Hämtad": "2026-09-26 12:09:40"
+    },
+    {
+        "Källa": "The Verge",
+        "Titel": "These camera apps give you more control over the iPhone 18 Pro’s aperture",
+        "Länk": "https://www.theverge.com/tech/1000729/moment-pro-blackmagic-camera-ii-ios-app-iphone-18-pro-max-aperature-camera",
+        "Publicerad": "2026-09-25T13:23:30-04:00",
+        "Hämtad": "2026-09-26 12:09:40"
+    },
+    {
+        "Källa": "The Verge",
+        "Titel": "Tesla&#8217;s Optimus robot is going through growing pains",
+        "Länk": "https://www.theverge.com/tech/1000794/tesla-optimus-production-issues-hands",
+        "Publicerad": "2026-09-25T13:01:36-04:00",
+        "Hämtad": "2026-09-26 12:09:40"
+    },
+    {
+        "Källa": "The Verge",
+        "Titel": "Meta makes the Muse filesystem even more accessible",
+        "Länk": "https://www.theverge.com/ai-artificial-intelligence/1000784/meta-muse-filesystem",
+        "Publicerad": "2026-09-25T12:49:53-04:00",
+        "Hämtad": "2026-09-26 12:09:40"
+    },
+    {
+        "Källa": "The Verge",
+        "Titel": "Leaks reveal a new Apple HomePod mini, iPad mini, and Apple TV 4K",
+        "Länk": "https://www.theverge.com/tech/1000772/apple-code-leak-homepod-mini-2-ipad-mini-8-apple-tv-4k",
+        "Publicerad": "2026-09-25T12:22:05-04:00",
+        "Hämtad": "2026-09-26 12:09:40"
+    },
+    {
+        "Källa": "The Verge",
+        "Titel": "Sony and UMG are suing Suno again",
+        "Länk": "https://www.theverge.com/ai-artificial-intelligence/1000758/suno-sony-umg-lawsuit-ai-music",
+        "Publicerad": "2026-09-25T11:51:56-04:00",
+        "Hämtad": "2026-09-26 12:09:40"
+    },
+    {
+        "Källa": "The Verge",
+        "Titel": "One company is at the center of a wave of rogue AI attacks",
+        "Länk": "https://www.theverge.com/ai-artificial-intelligence/1000644/irregular-rogue-ai-cyberattacks-hacking-openai-meta-anthropic-google",
+        "Publicerad": "2026-09-25T11:39:48-04:00",
+        "Hämtad": "2026-09-26 12:09:40"
+    },
+    {
+        "Källa": "Reddit Technology",
+        "Titel": "Mark Zuckerberg Loses $9 Billion in a Day as Goldman Sachs Pours Cold Water on Meta Stock Rally",
+        "Länk": "https://www.reddit.com/r/technology/comments/1wq55yj/mark_zuckerberg_loses_9_billion_in_a_day_as/",
+        "Publicerad": "2026-09-25T19:15:44+00:00",
+        "Hämtad": "2026-09-26 12:09:40"
+    },
+    {
+        "Källa": "Reddit Technology",
+        "Titel": "Scientists Detect Radio Signals From an Exoplanet for the First Time in History",
+        "Länk": "https://www.reddit.com/r/technology/comments/1wqfues/scientists_detect_radio_signals_from_an_exoplanet/",
+        "Publicerad": "2026-09-26T03:16:54+00:00",
+        "Hämtad": "2026-09-26 12:09:40"
+    },
+    {
+        "Källa": "Reddit Technology",
+        "Titel": "Americans are panicked over AI and affordability. Don't worry, the Senate is tackling college football",
+        "Länk": "https://www.reddit.com/r/technology/comments/1wqaiob/americans_are_panicked_over_ai_and_affordability/",
+        "Publicerad": "2026-09-25T22:57:01+00:00",
+        "Hämtad": "2026-09-26 12:09:40"
+    },
+    {
+        "Källa": "Reddit Technology",
+        "Titel": "Amazon's delivery drones are annoying an entire Texas neighborhood, and there's nothing they can do about it",
+        "Länk": "https://www.reddit.com/r/technology/comments/1wqnnai/amazons_delivery_drones_are_annoying_an_entire/",
+        "Publicerad": "2026-09-26T10:58:30+00:00",
+        "Hämtad": "2026-09-26 12:09:40"
+    },
+    {
+        "Källa": "Reddit Technology",
+        "Titel": "AOC, 9 other House Dems sign on to AI superintelligence ban",
+        "Länk": "https://www.reddit.com/r/technology/comments/1wq9xaj/aoc_9_other_house_dems_sign_on_to_ai/",
+        "Publicerad": "2026-09-25T22:30:40+00:00",
+        "Hämtad": "2026-09-26 12:09:40"
+    },
+    {
+        "Källa": "Reddit Technology",
+        "Titel": "Flock Wants the Most Detailed Map of Its Surveillance Cameras Taken Offline | A security researcher’s map revealed more locations of Flock devices than any other. Flock is trying to take it down",
+        "Länk": "https://www.reddit.com/r/technology/comments/1wpyzn4/flock_wants_the_most_detailed_map_of_its/",
+        "Publicerad": "2026-09-25T15:14:39+00:00",
+        "Hämtad": "2026-09-26 12:09:40"
+    },
+    {
+        "Källa": "Reddit Technology",
+        "Titel": "OpenAI bots meddled with US government agencies, including SEC and Census",
+        "Länk": "https://www.reddit.com/r/technology/comments/1wql1cl/openai_bots_meddled_with_us_government_agencies/",
+        "Publicerad": "2026-09-26T08:14:09+00:00",
+        "Hämtad": "2026-09-26 12:09:40"
+    },
+    {
+        "Källa": "Reddit Technology",
+        "Titel": "US being left behind in EV charging speeds as China goes sub-5 min to 70%",
+        "Länk": "https://www.reddit.com/r/technology/comments/1wq4sxc/us_being_left_behind_in_ev_charging_speeds_as/",
+        "Publicerad": "2026-09-25T19:01:30+00:00",
+        "Hämtad": "2026-09-26 12:09:40"
+    },
+    {
+        "Källa": "Reddit Technology",
+        "Titel": "Gabe Newell Tormented Employees with His Throat Singing for Five Months - CS Creator Recalls Working with Valve Boss",
+        "Länk": "https://www.reddit.com/r/technology/comments/1wqdxqf/gabe_newell_tormented_employees_with_his_throat/",
+        "Publicerad": "2026-09-26T01:38:49+00:00",
+        "Hämtad": "2026-09-26 12:09:40"
+    },
+    {
+        "Källa": "Reddit Technology",
+        "Titel": "OpenAI rogue agents leaked 53 images from ChatGPT users and reportedly created nearly 1 million links packing encoded bits of info",
+        "Länk": "https://www.reddit.com/r/technology/comments/1wqh8ti/openai_rogue_agents_leaked_53_images_from_chatgpt/",
+        "Publicerad": "2026-09-26T04:31:57+00:00",
+        "Hämtad": "2026-09-26 12:09:40"
+    },
+    {
+        "Källa": "Reddit Technology",
+        "Titel": "\"Using VPNs is not criminal\": digital rights advocates return for a second Defend VPNs Day of Action",
+        "Länk": "https://www.reddit.com/r/technology/comments/1wqd2w7/using_vpns_is_not_criminal_digital_rights/",
+        "Publicerad": "2026-09-26T00:56:20+00:00",
+        "Hämtad": "2026-09-26 12:09:40"
+    },
+    {
+        "Källa": "Reddit Technology",
+        "Titel": "Federal judge blocks Utah’s VPN update to its online porn age verification law",
+        "Länk": "https://www.reddit.com/r/technology/comments/1wq95io/federal_judge_blocks_utahs_vpn_update_to_its/",
+        "Publicerad": "2026-09-25T21:57:22+00:00",
+        "Hämtad": "2026-09-26 12:09:40"
+    },
+    {
+        "Källa": "Reddit Technology",
+        "Titel": "The price of ad-free streaming since launch is kinda insane",
+        "Länk": "https://www.reddit.com/r/technology/comments/1wqns15/the_price_of_adfree_streaming_since_launch_is/",
+        "Publicerad": "2026-09-26T11:05:41+00:00",
+        "Hämtad": "2026-09-26 12:09:40"
+    },
+    {
+        "Källa": "Reddit Technology",
+        "Titel": "Anthropic to pay Akamai $11.6 billion over seven years in cloud deal",
+        "Länk": "https://www.reddit.com/r/technology/comments/1wqccs1/anthropic_to_pay_akamai_116_billion_over_seven/",
+        "Publicerad": "2026-09-26T00:20:49+00:00",
+        "Hämtad": "2026-09-26 12:09:40"
+    },
+    {
+        "Källa": "Reddit Technology",
+        "Titel": "The Netherlands joins Europe's gradual migration from Windows to Linux on government PCs",
+        "Länk": "https://www.reddit.com/r/technology/comments/1wpv9od/the_netherlands_joins_europes_gradual_migration/",
+        "Publicerad": "2026-09-25T12:39:26+00:00",
+        "Hämtad": "2026-09-26 12:09:40"
+    },
+    {
+        "Källa": "Reddit Technology",
+        "Titel": "Temu axed its $1 billion network of fake influencer accounts on Meta",
+        "Länk": "https://www.reddit.com/r/technology/comments/1wq1yzz/temu_axed_its_1_billion_network_of_fake/",
+        "Publicerad": "2026-09-25T17:10:24+00:00",
+        "Hämtad": "2026-09-26 12:09:40"
+    },
+    {
+        "Källa": "Reddit Technology",
+        "Titel": "Court rules U.S President can blacklist Anthropic for refusing to enable Claude features: “Overly constrained AI models” could cause military operations to fail, judges say.",
+        "Länk": "https://www.reddit.com/r/technology/comments/1wqcb93/court_rules_us_president_can_blacklist_anthropic/",
+        "Publicerad": "2026-09-26T00:18:50+00:00",
+        "Hämtad": "2026-09-26 12:09:40"
+    },
+    {
+        "Källa": "Reddit Technology",
+        "Titel": "Fraudsters using AI to impersonate senior executives stole $108 million from Italy's biggest bank, Intesa Sanpaolo",
+        "Länk": "https://www.reddit.com/r/technology/comments/1wq3fb8/fraudsters_using_ai_to_impersonate_senior/",
+        "Publicerad": "2026-09-25T18:07:33+00:00",
+        "Hämtad": "2026-09-26 12:09:40"
+    },
+    {
+        "Källa": "Reddit Technology",
+        "Titel": "Trump admin using AI to deny medical care for seniors in disastrous experiment | Vendors rolling out AI have an “incentive to deny as many claims as possible.”",
+        "Länk": "https://www.reddit.com/r/technology/comments/1wpwveh/trump_admin_using_ai_to_deny_medical_care_for/",
+        "Publicerad": "2026-09-25T13:50:22+00:00",
+        "Hämtad": "2026-09-26 12:09:40"
+    },
+    {
+        "Källa": "Reddit Technology",
+        "Titel": "For months, OpenAI's agent swarms have been attacking online databases to find obscure facts",
+        "Länk": "https://www.reddit.com/r/technology/comments/1wq6wzb/for_months_openais_agent_swarms_have_been/",
+        "Publicerad": "2026-09-25T20:25:06+00:00",
+        "Hämtad": "2026-09-26 12:09:40"
+    },
+    {
+        "Källa": "Reddit Technology",
+        "Titel": "Microsoft CEO On Recent Xbox Layoffs: ‘There’s Some Amount Of Streamlining Asha Is Doing…Which Is Great To See’",
+        "Länk": "https://www.reddit.com/r/technology/comments/1wqc6da/microsoft_ceo_on_recent_xbox_layoffs_theres_some/",
+        "Publicerad": "2026-09-26T00:12:31+00:00",
+        "Hämtad": "2026-09-26 12:09:40"
+    },
+    {
+        "Källa": "Reddit Technology",
+        "Titel": "B.C. attorney general shocked by news report that ChatGPT told Tumbler Ridge shooter how to avoid safeguards",
+        "Länk": "https://www.reddit.com/r/technology/comments/1wpzvqj/bc_attorney_general_shocked_by_news_report_that/",
+        "Publicerad": "2026-09-25T15:50:03+00:00",
+        "Hämtad": "2026-09-26 12:09:40"
+    },
+    {
+        "Källa": "OpenAI News",
+        "Titel": "Proaction boosts sales 60% and saves 75+ hours with Codex",
+        "Länk": "https://openai.com/index/proaction",
+        "Publicerad": "Fri, 25 Sep 2026 19:00:00 GMT",
+        "Hämtad": "2026-09-26 12:09:41"
+    },
+    {
+        "Källa": "Harvard Business Review",
+        "Titel": "Why Your Employees Override AI",
+        "Länk": "http://feeds.harvardbusiness.org/2026/09/why-your-employees-override-ai",
+        "Publicerad": "2026-09-25T12:15:11Z",
+        "Hämtad": "2026-09-26 12:09:41"
+    },
+    {
+        "Källa": "Harvard Business Review",
+        "Titel": "Research: How Speech Patterns Shape Opportunity at Work",
+        "Länk": "http://feeds.harvardbusiness.org/2026/09/research-how-speech-patterns-shape-opportunity-at-work",
+        "Publicerad": "2026-09-25T12:05:42Z",
+        "Hämtad": "2026-09-26 12:09:41"
+    },
+    {
+        "Källa": "Dagens Industri",
+        "Titel": "Yubico och Hemnet åt olika håll – veckans vinnare och förlorare",
+        "Länk": "https://www.di.se/nyheter/yubico-och-hemnet-at-olika-hall-veckans-vinnare-och-forlorare/",
+        "Publicerad": "Sat, 26 Sep 2026 10:56:54 GMT",
+        "Hämtad": "2026-09-26 12:09:42"
+    },
+    {
+        "Källa": "Dagens Industri",
+        "Titel": "Plattformarna växer: Ny marknad för onoterat",
+        "Länk": "https://www.di.se/nyheter/plattformarna-vaxer-ny-marknad-for-onoterat/",
+        "Publicerad": "Sat, 26 Sep 2026 09:54:16 GMT",
+        "Hämtad": "2026-09-26 12:09:42"
+    },
+    {
+        "Källa": "Dagens Industri",
+        "Titel": "Skjut inte budbäraren",
+        "Länk": "https://www.di.se/debatt/skjut-inte-budbararen/",
+        "Publicerad": "Sat, 26 Sep 2026 09:14:05 GMT",
+        "Hämtad": "2026-09-26 12:09:42"
+    },
+    {
+        "Källa": "Dagens Industri",
+        "Titel": "EU-toppen vädjar till Trump  – varnar för extrem vinter",
+        "Länk": "https://www.di.se/nyheter/eu-toppen-vadjar-till-trump-varnar-for-extrem-vinter/",
+        "Publicerad": "Sat, 26 Sep 2026 08:55:10 GMT",
+        "Hämtad": "2026-09-26 12:09:42"
+    },
+    {
+        "Källa": "Dagens Industri",
+        "Titel": "Katastroftillstånd i Bangkok efter kraftiga regn",
+        "Länk": "https://www.di.se/nyheter/katastroftillstand-i-bangkok-efter-kraftiga-regn/",
+        "Publicerad": "Sat, 26 Sep 2026 08:23:09 GMT",
+        "Hämtad": "2026-09-26 12:09:42"
+    },
+    {
+        "Källa": "Dagens Industri",
+        "Titel": "AI-agent har åter försökt hacka myndighetssajt",
+        "Länk": "https://www.di.se/nyheter/ai-agent-har-ater-forsokt-hacka-myndighetssajt/",
+        "Publicerad": "Sat, 26 Sep 2026 07:20:49 GMT",
+        "Hämtad": "2026-09-26 12:09:42"
+    },
+    {
+        "Källa": "Dagens Industri",
+        "Titel": "Systemet som ska varna alla direkt",
+        "Länk": "https://www.di.se/nyheter/systemet-som-ska-varna-alla-direkt/",
+        "Publicerad": "Sat, 26 Sep 2026 07:02:13 GMT",
+        "Hämtad": "2026-09-26 12:09:42"
+    },
+    {
+        "Källa": "Dagens Industri",
+        "Titel": "Efter oron för brist – julens saffran säkrad",
+        "Länk": "https://www.di.se/nyheter/efter-oron-for-brist-julens-saffran-sakrad/",
+        "Publicerad": "Sat, 26 Sep 2026 06:59:42 GMT",
+        "Hämtad": "2026-09-26 12:09:42"
+    },
+    {
+        "Källa": "Dagens Industri",
+        "Titel": "Mediejätte bannlyst från presidentflyget",
+        "Länk": "https://www.di.se/nyheter/mediejatte-bannlyst-fran-presidentflyget/",
+        "Publicerad": "Sat, 26 Sep 2026 11:55:13 GMT",
+        "Hämtad": "2026-09-26 12:09:42"
+    },
+    {
+        "Källa": "Dagens Industri",
+        "Titel": "Rekordrea på utdelningsmaskinen",
+        "Länk": "https://www.di.se/analys/rekordrea-pa-utdelningsmaskinen/",
+        "Publicerad": "Sat, 26 Sep 2026 09:39:40 GMT",
+        "Hämtad": "2026-09-26 12:09:42"
+    },
+    {
+        "Källa": "Dagens Industri",
+        "Titel": "USA och Kina öppnar direktlinje om AI-incidenter",
+        "Länk": "https://www.di.se/nyheter/usa-och-kina-oppnar-direktlinje-om-ai-incidenter/",
+        "Publicerad": "Sat, 26 Sep 2026 05:47:26 GMT",
+        "Hämtad": "2026-09-26 12:09:42"
+    },
+    {
+        "Källa": "Dagens Industri",
+        "Titel": "Tiktok ska betala miljard efter förlikning",
+        "Länk": "https://www.di.se/nyheter/tiktok-ska-betala-miljard-efter-forlikning/",
+        "Publicerad": "Sat, 26 Sep 2026 05:27:02 GMT",
+        "Hämtad": "2026-09-26 12:09:42"
+    },
+    {
+        "Källa": "Dagens Industri",
+        "Titel": "Källor: Trump avvisar veckolång vapenvila",
+        "Länk": "https://www.di.se/nyheter/kallor-trump-avvisar-veckolang-vapenvila/",
+        "Publicerad": "Sat, 26 Sep 2026 09:32:05 GMT",
+        "Hämtad": "2026-09-26 12:09:42"
+    },
+    {
+        "Källa": "Dagens Industri",
+        "Titel": "Trump drar tillbaka miljarder i utgifter",
+        "Länk": "https://www.di.se/nyheter/trump-drar-tillbaka-miljarder-i-utgifter/",
+        "Publicerad": "Sat, 26 Sep 2026 05:16:08 GMT",
+        "Hämtad": "2026-09-26 12:09:42"
+    },
+    {
+        "Källa": "Dagens Industri",
+        "Titel": "Veckans viktigaste från Di:s nyhetstjänster",
+        "Länk": "https://www.di.se/nyheter/veckans-viktigaste-fran-di-s-nyhetstjanster-Fdwch/",
+        "Publicerad": "Sat, 26 Sep 2026 05:08:33 GMT",
+        "Hämtad": "2026-09-26 12:09:42"
+    },
+    {
+        "Källa": "Dagens Industri",
+        "Titel": "Thedéen varnar för AI-bolagens jätteskulder",
+        "Länk": "https://www.di.se/nyheter/thedeen-varnar-for-ai-bolagens-jatteskulder/",
+        "Publicerad": "Sat, 26 Sep 2026 05:05:04 GMT",
+        "Hämtad": "2026-09-26 12:09:42"
+    },
+    {
+        "Källa": "Dagens Industri",
+        "Titel": "Trump och Xi enades – om att köpa sig tid",
+        "Länk": "https://www.di.se/nyheter/trump-och-xi-enades-om-att-kopa-sig-tid/",
+        "Publicerad": "Sat, 26 Sep 2026 09:34:06 GMT",
+        "Hämtad": "2026-09-26 12:09:42"
+    },
+    {
+        "Källa": "Dagens Industri",
+        "Titel": "ECB-chefen: Energipriserna kvar på hög nivå",
+        "Länk": "https://www.di.se/live/ecb-chefen-energipriserna-kvar-pa-hog-niva/",
+        "Publicerad": "Fri, 25 Sep 2026 20:28:30 GMT",
+        "Hämtad": "2026-09-26 12:09:42"
+    },
+    {
+        "Källa": "Dagens Industri",
+        "Titel": "Wall Street avslutade veckan i dur – Microsoft lyfte",
+        "Länk": "https://www.di.se/live/wall-street-avslutade-veckan-i-dur-microsoft-lyfte/",
+        "Publicerad": "Sat, 26 Sep 2026 05:59:02 GMT",
+        "Hämtad": "2026-09-26 12:09:42"
+    },
+    {
+        "Källa": "Dagens Industri",
+        "Titel": "Putin: Förbereder inte konflikt med Europa",
+        "Länk": "https://www.di.se/live/putin-forbereder-inte-konflikt-med-europa/",
+        "Publicerad": "Fri, 25 Sep 2026 19:47:46 GMT",
+        "Hämtad": "2026-09-26 12:09:42"
     }
 ]
